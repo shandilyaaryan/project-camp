@@ -6,9 +6,7 @@
   "scripts": {
     "dev": "bun src/index.ts",
     "format": "bunx prettier . --write",
-    "format:check": "bunx prettier . --check",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix"
+    "format:check": "bunx prettier . --check"
   },
   "devDependencies": {
     "@types/bun": "latest",
@@ -19,6 +17,5 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "jiti": "^2.6.1"
   }
 }
