@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "bun --watch src/index.ts",
+    "start": "bun src/index.ts",
     "format": "bunx prettier . --write",
     "format:check": "bunx prettier . --check"
   },
