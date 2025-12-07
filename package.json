@@ -4,12 +4,21 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun src/index.ts"
+    "dev": "bun src/index.ts",
+    "format": "bunx prettier . --write",
+    "format:check": "bunx prettier . --check",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "globals": "^16.5.0",
+    "prettier": "^3.7.4"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "jiti": "^2.6.1"
   }
 }
