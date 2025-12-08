@@ -13,6 +13,7 @@
     "@types/bun": "latest",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/mongoose": "^5.11.97",
     "globals": "^16.5.0",
     "prettier": "^3.7.4"
   },
@@ -21,6 +22,7 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "mongoose": "^9.0.1"
   }
 }
