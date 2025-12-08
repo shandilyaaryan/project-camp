@@ -1,15 +1,15 @@
-interface ApiResponseType<T> {
+interface ApiResponseInput<T> {
   statuscode: number;
   data: T;
   message?: string;
 }
 
-class ApiResponse<T> implements ApiResponseType<T> {
+class ApiResponse<T> implements ApiResponseInput<T> {
   statuscode: number;
   data: T;
   message?: string;
   success: boolean;
-  constructor({ statuscode, data, message = "Success" }: ApiResponseType<T>) {
+  constructor({ statuscode, data, message = "Success" }: ApiResponseInput<T>) {
     this.statuscode = statuscode;
     this.data = data;
     this.message = message;
