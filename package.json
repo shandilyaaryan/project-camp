@@ -10,6 +10,7 @@
     "format:check": "bunx prettier . --check"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/bun": "latest",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
@@ -21,6 +22,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "express": "^5.2.1",
     "mongoose": "^9.0.1"
