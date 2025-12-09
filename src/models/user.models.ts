@@ -1,7 +1,31 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Document, type ObjectId } from "mongoose";
 import bcrypt from "bcrypt";
+import jwt, { type Secret } from "jsonwebtoken";
+import type { StringValue } from "ms";
 
-const userSchema = new Schema(
+export interface IUser extends Document {
+  avatar: {
+    url: string;
+    localPath: string;
+  };
+  username: string;
+  email: string;
+  fullName: string;
+  password: string;
+  refreshToken?: string;
+  forgotPasswordToken?: string;
+  forgotPasswordExpiry?: Date;
+  emailVerificationToken?: string;
+  emailVerificationExpiry?: Date;
+  isEmailVerified: boolean;
+
+  // METHODS
+  comparePassword(password: string): Promise<boolean>;
+  generateAccessToken(): string;
+  generateRefreshToken(): string;
+}
+
+const userSchema = new Schema<IUser>(
   {
     avatar: {
       type: { url: String, localPath: String },
@@ -50,7 +74,6 @@ const userSchema = new Schema(
 
 userSchema.pre("save", async function () {
   if (!this.isModified("password")) return;
-
   this.password = await bcrypt.hash(this.password, 10);
 });
 
@@ -58,4 +81,28 @@ userSchema.methods.comparePassword = async function (password: string) {
   return bcrypt.compare(password, this.password);
 };
 
-export const UserModel = mongoose.model("User", userSchema);
+userSchema.methods.generateAccessToken = function () {
+  return jwt.sign(
+    {
+      _id: this._id.toString(),
+      email: this.email,
+      username: this.username,
+    },
+    process.env.ACCESS_TOKEN_SECRET as Secret,
+    { expiresIn: process.env.ACCESS_TOKEN_EXPIRY as StringValue },
+  );
+};
+
+userSchema.methods.generateRefreshToken = function () {
+  return jwt.sign(
+    {
+      _id: this._id.toString(),
+      email: this.email,
+      username: this.username,
+    },
+    process.env.REFRESH_TOKEN_SECRET as Secret,
+    { expiresIn: process.env.REFRESH_TOKEN_EXPIRY as StringValue },
+  );
+};
+
+export const UserModel = mongoose.model<IUser>("User", userSchema);
