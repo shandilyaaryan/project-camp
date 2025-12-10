@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, type ObjectId } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt, { type Secret } from "jsonwebtoken";
 import type { StringValue } from "ms";
@@ -78,7 +78,7 @@ userSchema.pre("save", async function () {
 });
 
 userSchema.methods.comparePassword = async function (password: string) {
-  return bcrypt.compare(password, this.password);
+  return await bcrypt.compare(password, this.password);
 };
 
 userSchema.methods.generateAccessToken = function () {
@@ -97,8 +97,6 @@ userSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
     {
       _id: this._id.toString(),
-      email: this.email,
-      username: this.username,
     },
     process.env.REFRESH_TOKEN_SECRET as Secret,
     { expiresIn: process.env.REFRESH_TOKEN_EXPIRY as StringValue },
