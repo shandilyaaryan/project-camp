@@ -2,6 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt, { type Secret } from "jsonwebtoken";
 import type { StringValue } from "ms";
+import crypto from "crypto";
 
 export interface IUser extends Document {
   avatar: {
@@ -23,6 +24,11 @@ export interface IUser extends Document {
   comparePassword(password: string): Promise<boolean>;
   generateAccessToken(): string;
   generateRefreshToken(): string;
+  generateTemporaryToken(): {
+    unhashedToken: string;
+    hashedToken: string;
+    tokenExpiry: number;
+  };
 }
 
 const userSchema = new Schema<IUser>(
@@ -101,6 +107,16 @@ userSchema.methods.generateRefreshToken = function () {
     process.env.REFRESH_TOKEN_SECRET as Secret,
     { expiresIn: process.env.REFRESH_TOKEN_EXPIRY as StringValue },
   );
+};
+
+userSchema.methods.generateTemporaryToken = function () {
+  const unhashedToken = crypto.randomBytes(20).toString("hex");
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(unhashedToken)
+    .digest("hex");
+  const tokenExpiry = Date.now() + 20 * 60 * 1000; // 20 mins
+  return { unhashedToken, hashedToken, tokenExpiry };
 };
 
 export const UserModel = mongoose.model<IUser>("User", userSchema);
