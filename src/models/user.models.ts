@@ -30,13 +30,8 @@ export interface IUser extends Document {
   };
 }
 
-export type SafeUser = Omit<
-  IUser,
-  | "password"
-  | "refreshToken"
-  | "emailVerificationToken"
-  | "emailVerificationExpiry"
->;
+export type SafeUser = Omit<IUser, "password" > &
+  Partial<Pick<IUser, "password">>;
 
 const userSchema = new Schema<IUser>(
   {

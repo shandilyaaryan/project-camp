@@ -1,4 +1,4 @@
-import { UserModel, type SafeUser } from "../models/user.models";
+import { UserModel, type IUser, type SafeUser } from "../models/user.models";
 import { ApiError } from "../utils/api-error";
 import { ApiResponse } from "../utils/api-response";
 import asynchandler from "../utils/async-handler";
@@ -60,6 +60,10 @@ export const registerUser = asynchandler(async (req, res) => {
     ),
   });
   const createdUser = user.toObject() as SafeUser;
+  delete createdUser.password;
+  delete createdUser.refreshToken;
+  delete createdUser.emailVerificationExpiry;
+  delete createdUser.emailVerificationToken;
 
   return res.status(201).json(
     new ApiResponse({
