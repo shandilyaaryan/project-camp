@@ -346,7 +346,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **GitHub Issues:** [Report a bug or request a feature](https://github.com/shandilyaaryan/project-camp/issues)
 - **Email:** aryanshandilya10@gmail.com
-- **Twitter:** [@Aryanshandilya9](https://twitter.com/aryanshandilya9)
+- **Twitter:** [@Aryanshandilya](https://twitter.com/shandilyaaryan7)
 
 ---
 
