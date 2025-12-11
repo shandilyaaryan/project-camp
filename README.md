@@ -1,5 +1,9 @@
 <p align="center">
-  <img src="https://dummyimage.com/1200x250/3b82f6/ffffff&text=Project+Camp+-+Backend+API" />
+  <picture>
+    <source media="(prefers-color-scheme: light)" srcset="public/project-camp-dark.svg">
+    <source media="(prefers-color-scheme: dark)" srcset="public/project-camp-light.svg">
+    <img alt="Project Camp Logo" src="public/project-camp-light.svg" width="640" />
+  </picture>
 </p>
 
 <p align="center">
