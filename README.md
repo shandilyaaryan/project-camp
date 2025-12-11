@@ -3,7 +3,7 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./public/project-camp-light.svg">
   <source media="(prefers-color-scheme: light)" srcset="./public/project-camp-dark.svg">
-  <img alt="Project Camp Logo" src="./public/project-camp-light.svg" width="800">
+  <img alt="Project Camp Logo" src="./public/project-camp-light.svg" width="700">
 </picture>
 
 <br />
@@ -355,9 +355,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **[⬆ Back to Top](#project-camp)**
 
 Made with ❤️ by [Aryan Shandilya](https://github.com/shandilyaaryan)
-
-[![GitHub Stars](https://img.shields.io/github/stars/YOUR_USERNAME/project-camp?style=social)](https://github.com/shandilyaaryan/project-camp)
-[![GitHub Forks](https://img.shields.io/github/forks/YOUR_USERNAME/project-camp?style=social)](https://github.com/shandilyaaryan/project-camp/fork)
-[![Twitter Follow](https://img.shields.io/twitter/follow/YOUR_TWITTER_HANDLE?style=social)](https://twitter.com/AryanShandilya9)
 
 </div>
