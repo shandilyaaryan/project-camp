@@ -1,180 +1,201 @@
-# Product Requirements Document (PRD)
+<p align="center">
+  <img src="https://dummyimage.com/1200x250/3b82f6/ffffff&text=Project+Camp+-+Backend+API" />
+</p>
 
-## Project Camp Backend
+<p align="center">
+  <img width="160" src="data:image/svg+xml;utf8,<svg width='180' height='40' viewBox='0 0 400 90' xmlns='http://www.w3.org/2000/svg'><rect rx='10' width='90' height='90' fill='%233B82F6'/><path d='M25 55 L45 25 L65 55 Z' fill='white'/><text x='110' y='58' font-family='Inter, sans-serif' font-size='42' fill='%23111'>Project Camp</text></svg>' />
+</p>
 
-### 1. Product Overview
+<p align="center">
+  <img src="https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Express.js-4.x-black?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/MongoDB-Mongoose-47A248?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/PRs-Welcome-blueviolet?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Code%20Style-Prettier-F7B93E?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" />
+</p>
 
-**Product Name:** Project Camp Backend  
-**Version:** 1.0.0  
-**Product Type:** Backend API for Project Management System
+# Project Camp — Backend API
 
-Project Camp Backend is a RESTful API service designed to support collaborative project management. The system enables teams to organize projects, manage tasks with subtasks, maintain project notes, and handle user authentication with role-based access control.
+*A collaborative project management backend*
 
-### 2. Target Users
+<p align="center">
+  <img src="https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Express.js-4.x-black?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/MongoDB-Mongoose-47A248?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" />
+</p>
 
-- **Project Administrators:** Create and manage projects, assign roles, oversee all project activities
-- **Project Admins:** Manage tasks and project content within assigned projects
-- **Team Members:** View projects, update task completion status, access project information
+<p align="center">
+  A modern backend API built with TypeScript, JWT Auth, RBAC, email verification,
+  and scalable architecture inspired by Basecamp.
+</p>
 
-### 3. Core Features
+---
 
-#### 3.1 User Authentication & Authorization
+## ✨ Features
 
-- **User Registration:** Account creation with email verification
-- **User Login:** Secure authentication with JWT tokens
-- **Password Management:** Change password, forgot/reset password functionality
-- **Email Verification:** Account verification via email tokens
-- **Token Management:** Access token refresh mechanism
-- **Role-Based Access Control:** Three-tier permission system (Admin, Project Admin, Member)
+### 🔐 Authentication & Security
 
-#### 3.2 Project Management
+* JWT Access + Refresh tokens
+* Password hashing (bcrypt)
+* Email verification flow
+* Forgot/Reset password
+* Temporary token system (SHA-256 hashed)
+* Role-based access control (Admin, Project Admin, Member)
 
-- **Project Creation:** Create new projects with name and description
-- **Project Listing:** View all projects user has access to with member count
-- **Project Details:** Access individual project information
-- **Project Updates:** Modify project information (Admin only)
-- **Project Deletion:** Remove projects (Admin only)
+### 📁 Project Management
 
-#### 3.3 Team Member Management
+* CRUD for projects
+* Project member management
+* Role assignments per project
+* Project notes system
 
-- **Member Addition:** Invite users to projects via email
-- **Member Listing:** View all project team members
-- **Role Management:** Update member roles within projects (Admin only)
-- **Member Removal:** Remove team members from projects (Admin only)
+### 📌 Tasks & Subtasks
 
-#### 3.4 Task Management
+* Task CRUD
+* Subtask management
+* Status workflow (Todo → In Progress → Done)
+* File attachments
+* Assign tasks to members
 
-- **Task Creation:** Create tasks with title, description, and assignee
-- **Task Listing:** View all tasks within a project
-- **Task Details:** Access individual task information
-- **Task Updates:** Modify task information and status
-- **Task Deletion:** Remove tasks from projects
-- **File Attachments:** Support for multiple file attachments on tasks
-- **Task Assignment:** Assign tasks to specific team members
-- **Status Tracking:** Three-state status system (Todo, In Progress, Done)
+### 📨 Email System
 
-#### 3.5 Subtask Management
+* Mailgen templates
+* Nodemailer SMTP sending
+* Verification + reset templates
 
-- **Subtask Creation:** Add subtasks to existing tasks
-- **Subtask Updates:** Modify subtask details and completion status
-- **Subtask Deletion:** Remove subtasks (Admin/Project Admin only)
-- **Member Completion:** Allow members to mark subtasks as complete
+### 🧱 Tech Stack
 
-#### 3.6 Project Notes
+* Node.js + Express
+* TypeScript
+* MongoDB + Mongoose
+* Mailgen + Nodemailer
+* Zod (optional) for schema validation
 
-- **Note Creation:** Add notes to projects (Admin only)
-- **Note Listing:** View all project notes
-- **Note Details:** Access individual note content
-- **Note Updates:** Modify existing notes (Admin only)
-- **Note Deletion:** Remove notes (Admin only)
+---
 
-#### 3.7 System Health
+## 📦 Folder Structure
 
-- **Health Check:** API endpoint for system status monitoring
+```
+project-camp-backend/
+│
+├── src/
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── utils/
+│   ├── middlewares/
+│   └── config/
+│
+├── .env.example
+├── package.json
+├── tsconfig.json
+└── README.md
+```
 
-### 4. Technical Specifications
+---
 
-#### 4.1 API Endpoints Structure
+## ⚙️ Environment Variables
 
-**Authentication Routes** (`/api/v1/auth/`)
+Create a `.env` file with:
 
-- `POST /register` - User registration
-- `POST /login` - User authentication
-- `POST /logout` - User logout (secured)
-- `GET /current-user` - Get current user info (secured)
-- `POST /change-password` - Change user password (secured)
-- `POST /refresh-token` - Refresh access token
-- `GET /verify-email/:verificationToken` - Email verification
-- `POST /forgot-password` - Request password reset
-- `POST /reset-password/:resetToken` - Reset forgotten password
-- `POST /resend-email-verification` - Resend verification email (secured)
+```
+MONGODB_URI=
+PORT=5000
 
-**Project Routes** (`/api/v1/projects/`)
+ACCESS_TOKEN_SECRET=
+ACCESS_TOKEN_EXPIRY=1d
 
-- `GET /` - List user projects (secured)
-- `POST /` - Create project (secured)
-- `GET /:projectId` - Get project details (secured, role-based)
-- `PUT /:projectId` - Update project (secured, Admin only)
-- `DELETE /:projectId` - Delete project (secured, Admin only)
-- `GET /:projectId/members` - List project members (secured)
-- `POST /:projectId/members` - Add project member (secured, Admin only)
-- `PUT /:projectId/members/:userId` - Update member role (secured, Admin only)
-- `DELETE /:projectId/members/:userId` - Remove member (secured, Admin only)
+REFRESH_TOKEN_SECRET=
+REFRESH_TOKEN_EXPIRY=7d
 
-**Task Routes** (`/api/v1/tasks/`)
+MAILTRAP_SMTP_HOST=
+MAILTRAP_SMTP_PORT=
+MAILTRAP_SMTP_USER=
+MAILTRAP_SMTP_PASS=
 
-- `GET /:projectId` - List project tasks (secured, role-based)
-- `POST /:projectId` - Create task (secured, Admin/Project Admin)
-- `GET /:projectId/t/:taskId` - Get task details (secured, role-based)
-- `PUT /:projectId/t/:taskId` - Update task (secured, Admin/Project Admin)
-- `DELETE /:projectId/t/:taskId` - Delete task (secured, Admin/Project Admin)
-- `POST /:projectId/t/:taskId/subtasks` - Create subtask (secured, Admin/Project Admin)
-- `PUT /:projectId/st/:subTaskId` - Update subtask (secured, role-based)
-- `DELETE /:projectId/st/:subTaskId` - Delete subtask (secured, Admin/Project Admin)
+FRONTEND_URL=https://project-camp.vercel.app
+```
 
-**Note Routes** (`/api/v1/notes/`)
+---
 
-- `GET /:projectId` - List project notes (secured, role-based)
-- `POST /:projectId` - Create note (secured, Admin only)
-- `GET /:projectId/n/:noteId` - Get note details (secured, role-based)
-- `PUT /:projectId/n/:noteId` - Update note (secured, Admin only)
-- `DELETE /:projectId/n/:noteId` - Delete note (secured, Admin only)
+## 🛠️ Installation & Setup
 
-**Health Check** (`/api/v1/healthcheck/`)
+### Using Bun
 
-- `GET /` - System health status
+```
+bun install
+bun run dev
+```
 
-#### 4.2 Permission Matrix
+### Using npm
 
-| Feature                    | Admin | Project Admin | Member |
-| -------------------------- | ----- | ------------- | ------ |
-| Create Project             | ✓     | ✗             | ✗      |
-| Update/Delete Project      | ✓     | ✗             | ✗      |
-| Manage Project Members     | ✓     | ✗             | ✗      |
-| Create/Update/Delete Tasks | ✓     | ✓             | ✗      |
-| View Tasks                 | ✓     | ✓             | ✓      |
-| Update Subtask Status      | ✓     | ✓             | ✓      |
-| Create/Delete Subtasks     | ✓     | ✓             | ✗      |
-| Create/Update/Delete Notes | ✓     | ✗             | ✗      |
-| View Notes                 | ✓     | ✓             | ✓      |
+```
+npm install
+npm run dev
+```
 
-#### 4.3 Data Models
+Server runs at:
 
-**User Roles:**
+```
+http://localhost:5000
+```
 
-- `admin` - Full system access
-- `project_admin` - Project-level administrative access
-- `member` - Basic project member access
+---
 
-**Task Status:**
+## 🔗 API Overview
 
-- `todo` - Task not started
-- `in_progress` - Task currently being worked on
-- `done` - Task completed
+### Auth Endpoints
 
-### 5. Security Features
+| Method | Route                                | Description        |
+| ------ | ------------------------------------ | ------------------ |
+| POST   | `/api/v1/auth/register`              | Register new user  |
+| GET    | `/api/v1/auth/verify-email/:token`   | Verify email token |
+| POST   | `/api/v1/auth/login`                 | Login              |
+| POST   | `/api/v1/auth/logout`                | Logout             |
+| POST   | `/api/v1/auth/refresh-token`         | Refresh token      |
+| POST   | `/api/v1/auth/forgot-password`       | Send reset email   |
+| POST   | `/api/v1/auth/reset-password/:token` | Reset password     |
 
-- JWT-based authentication with refresh tokens
-- Role-based authorization middleware
-- Input validation on all endpoints
-- Email verification for account security
-- Secure password reset functionality
-- File upload security with Multer middleware
-- CORS configuration for cross-origin requests
+### Project Routes
 
-### 6. File Management
+| Method | Route                         | Description        |
+| ------ | ----------------------------- | ------------------ |
+| GET    | `/api/v1/projects`            | List user projects |
+| POST   | `/api/v1/projects`            | Create project     |
+| PUT    | `/api/v1/projects/:projectId` | Update project     |
+| DELETE | `/api/v1/projects/:projectId` | Delete project     |
 
-- Support for multiple file attachments on tasks
-- Files stored in public/images directory
-- File metadata tracking (URL, MIME type, size)
-- Secure file upload handling
+*(Similar tables can be added for tasks, subtasks & notes.)*
 
-### 7. Success Criteria
+---
 
-- Secure user authentication and authorization system
-- Complete project lifecycle management
-- Hierarchical task and subtask organization
-- Role-based access control implementation
-- File attachment capability for enhanced collaboration
-- Email notification system for user verification and password reset
-- Comprehensive API documentation through endpoint structure
+## ⭐ Scripts
+
+```
+bun run dev  # Start dev server
+bun run build
+bun start
+```
+
+---
+
+## 🤝 Contributing
+
+PRs are welcome! Fork → Branch → PR.
+
+---
+
+## 📜 License
+
+MIT License
+
+---
+
+## ⭐ Support
+
+If you found this useful, please star the repo — it helps a lot!
