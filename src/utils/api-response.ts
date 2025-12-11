@@ -7,9 +7,9 @@ interface ApiResponseInput<T> {
 class ApiResponse<T> implements ApiResponseInput<T> {
   statuscode: number;
   data: T;
-  message: string;
+  message?: string;
   success: boolean;
-  constructor(statuscode: number, data: T, message: string = "Success") {
+  constructor({ statuscode, data, message = "Success" }: ApiResponseInput<T>) {
     this.statuscode = statuscode;
     this.data = data;
     this.message = message;

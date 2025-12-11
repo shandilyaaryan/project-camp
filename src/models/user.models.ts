@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import jwt, { type Secret } from "jsonwebtoken";
 import type { StringValue } from "ms";
 import crypto from "crypto";
-
 export interface IUser extends Document {
   avatar: {
     url: string;
@@ -17,7 +16,7 @@ export interface IUser extends Document {
   forgotPasswordToken?: string;
   forgotPasswordExpiry?: Date;
   emailVerificationToken?: string;
-  emailVerificationExpiry?: Date;
+  emailVerificationExpiry?: number;
   isEmailVerified: boolean;
 
   // METHODS
@@ -30,6 +29,14 @@ export interface IUser extends Document {
     tokenExpiry: number;
   };
 }
+
+export type SafeUser = Omit<
+  IUser,
+  | "password"
+  | "refreshToken"
+  | "emailVerificationToken"
+  | "emailVerificationExpiry"
+>;
 
 const userSchema = new Schema<IUser>(
   {
