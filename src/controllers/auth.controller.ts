@@ -57,11 +57,9 @@ export const registerUser = asynchandler(async (req, res) => {
       `${req.protocol}://${req.get("host")}/api/v1/users/verify-email/${unhashedToken}`,
     ),
   });
-  const createdUser = user.toObject() as SafeUser;
-  delete createdUser.password;
-  delete createdUser.refreshToken;
-  delete createdUser.emailVerificationExpiry;
-  delete createdUser.emailVerificationToken;
+  const createdUser: SafeUser = await UserModel.findById(user._id).select(
+    "-password -refreshToken -emailVerificationToken -emailVerificationExpiry",
+  );
 
   return res.status(201).json(
     new ApiResponse({
@@ -71,4 +69,61 @@ export const registerUser = asynchandler(async (req, res) => {
         "User registered successfully and verification email has been sent to your email",
     }),
   );
+});
+
+export const loginUser = asynchandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email) {
+    throw new ApiError({
+      statuscode: 400,
+      message: "Email is required",
+    });
+  }
+
+  const user = await UserModel.findOne({ email });
+  if (!user) {
+    throw new ApiError({
+      statuscode: 400,
+      message: "You are not registered please register before login",
+    });
+  }
+  const isValidPassword = await user.comparePassword(password);
+  if (!isValidPassword) {
+    throw new ApiError({
+      statuscode: 400,
+      message: "Incorrect Password. Please try again.",
+    });
+  }
+  const { accessToken, refreshToken } = await generateAccessandRefreshToken(
+    user._id.toString(),
+  );
+
+  const loggedInUser: SafeUser = await UserModel.findById(user._id).select(
+    "-password -refreshToken -emailVerificationToken -emailVerificationExpiry",
+  );
+
+  const options: {
+    httpOnly: true;
+    secure: true;
+    sameSite: "strict";
+  } = {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+  };
+
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(
+      new ApiResponse({
+        statuscode: 200,
+        data: {
+          user: loggedInUser,
+        },
+        message: "User logged in successfully",
+      }),
+    );
 });

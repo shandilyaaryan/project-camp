@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { authRouter, healthCheckRouter } from "./routers";
+import { errmiddleware } from "./middlewares/errors.middleware";
 
 const app = express();
 
@@ -16,6 +18,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
+app.use(cookieParser());
 
 app.use("/api/v1/healthcheck", healthCheckRouter);
 app.use("/api/v1/auth", authRouter);
@@ -23,5 +26,7 @@ app.use("/api/v1/auth", authRouter);
 app.get("/", (req, res) => {
   res.send("Hello there");
 });
+
+app.use(errmiddleware);
 
 export default app;

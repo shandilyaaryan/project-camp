@@ -16,7 +16,7 @@ export interface IUser extends Document {
   forgotPasswordToken?: string;
   forgotPasswordExpiry?: Date;
   emailVerificationToken?: string;
-  emailVerificationExpiry?: number;
+  emailVerificationExpiry?: Date;
   isEmailVerified: boolean;
 
   // METHODS
@@ -26,12 +26,17 @@ export interface IUser extends Document {
   generateTemporaryToken(): {
     unhashedToken: string;
     hashedToken: string;
-    tokenExpiry: number;
+    tokenExpiry: Date;
   };
 }
 
-export type SafeUser = Omit<IUser, "password" > &
-  Partial<Pick<IUser, "password">>;
+export type SafeUser = Omit<
+  IUser,
+  | "password"
+  | "emailVerificationToken"
+  | "refreshToken"
+  | "emailVerificationExpiry"
+>;
 
 const userSchema = new Schema<IUser>(
   {
