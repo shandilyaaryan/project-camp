@@ -1,13 +1,13 @@
 interface ApiErrorInput {
   statuscode: number;
   message: string;
-  errors?: string[];
+  errors?: string[] | Object[];
   stack?: string;
 }
 
 class ApiError extends Error {
   statuscode: number;
-  errors: string[];
+  errors: string[] | Object[];
 
   constructor({ statuscode, message, errors = [], stack }: ApiErrorInput) {
     super(message);
