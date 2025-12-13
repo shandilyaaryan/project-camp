@@ -18,4 +18,5 @@ export const bodySchema = z.object({
         "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
     }),
   email: z.email("Please enter a valid email address"),
+  fullName: z.string().optional()
 });
