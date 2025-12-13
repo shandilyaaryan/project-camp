@@ -5,7 +5,7 @@ interface ApiErrorInput {
   stack?: string;
 }
 
-class ApiError extends Error {
+export class ApiError extends Error {
   statuscode: number;
   errors: string[] | Object[];
 
@@ -24,5 +24,3 @@ class ApiError extends Error {
     Object.setPrototypeOf(this, ApiError.prototype);
   }
 }
-
-export { ApiError };

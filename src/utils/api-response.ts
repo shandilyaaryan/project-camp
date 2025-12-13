@@ -4,7 +4,7 @@ interface ApiResponseInput<T> {
   message?: string;
 }
 
-class ApiResponse<T> implements ApiResponseInput<T> {
+export class ApiResponse<T> implements ApiResponseInput<T> {
   statuscode: number;
   data: T;
   message?: string;
@@ -16,5 +16,3 @@ class ApiResponse<T> implements ApiResponseInput<T> {
     this.success = statuscode < 400;
   }
 }
-
-export { ApiResponse };

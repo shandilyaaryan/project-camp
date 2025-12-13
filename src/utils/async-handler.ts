@@ -6,12 +6,10 @@ type handler = (
   next: NextFunction,
 ) => Promise<any> | any;
 
-const asynchandler = (requestHandler: handler) => {
+export const asynchandler = (requestHandler: handler) => {
   return (req: Request, res: Response, next: NextFunction) => {
     Promise.resolve(requestHandler(req, res, next)).catch((error) =>
       next(error),
     );
   };
 };
-
-export default asynchandler;

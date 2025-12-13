@@ -1,7 +1,5 @@
-import { UserModel, type IUser, type SafeUser } from "../models/user.models";
-import { ApiError } from "../utils/api-error";
-import { ApiResponse } from "../utils/api-response";
-import asynchandler from "../utils/async-handler";
+import { UserModel, type SafeUser } from "../models/user.models";
+import { ApiError, ApiResponse, asynchandler } from "../utils";
 import { emailVerificationMailgenContent, sendEmail } from "../utils/mail";
 
 export const generateAccessandRefreshToken = async (userId: string) => {

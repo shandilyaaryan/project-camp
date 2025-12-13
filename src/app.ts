@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
-import healthCheckRouter from "./routers/healthcheck.route";
-import authRouter from "./routers/auth.route";
+import { authRouter, healthCheckRouter } from "./routers";
 
 const app = express();
 

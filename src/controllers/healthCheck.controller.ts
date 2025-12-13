@@ -1,7 +1,6 @@
-import { ApiResponse } from "../utils/api-response";
-import asynchandler from "../utils/async-handler";
+import { ApiResponse, asynchandler } from "../utils";
 
-const healthCheck = asynchandler(async (req, res, next) => {
+export const healthCheck = asynchandler(async (req, res, next) => {
   res.status(200).json(
     new ApiResponse({
       statuscode: 200,
@@ -9,4 +8,3 @@ const healthCheck = asynchandler(async (req, res, next) => {
     }),
   );
 });
-export default healthCheck;
