@@ -1,29 +1,21 @@
-import {
-  validationResult,
-  type FieldValidationError,
-} from "express-validator";
-
+import type { NextFunction, Request, Response } from "express";
+import type { ZodType } from "zod";
 import { ApiError } from "../utils/api-error";
-import type { Request, Response, NextFunction } from "express";
 
-export const validator = (req: Request, res: Response, next: NextFunction) => {
-  const errors = validationResult(req);
+export const validate =
+  (schema: ZodType) => (req: Request, res: Response, next: NextFunction) => {
+    const parsed = schema.safeParse(req.body);
 
-  if (errors.isEmpty()) {
-    return next();
-  }
-
-  const extractedErrors = errors
-    .array()
-    .filter((err): err is FieldValidationError => err.type === "field")
-    .map((err) => ({
-      field: err.path,
-      message: err.msg,
-    }));
-
-  throw new ApiError({
-    statuscode: 400,
-    message: "Validation failed",
-    errors: extractedErrors,
-  });
-};
+    if (!parsed.success) {
+      throw new ApiError({
+        statuscode: 400,
+        message: "Validation Failed",
+        errors: parsed.error.issues.map((err) => ({
+          field: err.path.join("."),
+          message: err.message,
+        })),
+      });
+    }
+    req.body = parsed.data;
+    next();
+  };
