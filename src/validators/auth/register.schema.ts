@@ -4,7 +4,7 @@ const strongPasswordRegex = new RegExp(
   "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",
 );
 
-export const bodySchema = z.object({
+export const registerSchema = z.object({
   username: z
     .string()
     .min(5, "Username must be atleast 5 characters")
@@ -18,5 +18,5 @@ export const bodySchema = z.object({
         "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
     }),
   email: z.email("Please enter a valid email address"),
-  fullName: z.string().optional()
+  fullName: z.string().optional(),
 });
