@@ -85,6 +85,9 @@ const userSchema = new Schema<IUser>(
   { timestamps: true },
 );
 
+export const SAFE_USER_PROJECTION =
+  "-password -refreshToken -emailVerificationToken -emailVerificationExpiry";
+
 userSchema.pre("save", async function () {
   if (!this.isModified("password")) return;
   this.password = await bcrypt.hash(this.password, 10);

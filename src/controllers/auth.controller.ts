@@ -1,4 +1,4 @@
-import { UserModel, type SafeUser } from "../models/user.models";
+import { SAFE_USER_PROJECTION, UserModel, type SafeUser } from "../models/user.models";
 import { issueTokenForUser } from "../services";
 import { ApiError, ApiResponse, asynchandler } from "../utils";
 import { authCookieOptions } from "../utils/cookie";
@@ -39,7 +39,7 @@ export const registerUser = asynchandler(async (req, res) => {
     ),
   });
   const createdUser: SafeUser = await UserModel.findById(user._id).select(
-    "-password -refreshToken -emailVerificationToken -emailVerificationExpiry",
+    SAFE_USER_PROJECTION,
   );
 
   return res.status(201).json(
