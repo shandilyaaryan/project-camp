@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { authRouter, healthCheckRouter } from "./routers";
-import { errmiddleware } from "./middlewares/errors.middleware";
+import { errmiddleware } from "./middlewares";
 
 const app = express();
 
