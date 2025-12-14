@@ -1,6 +1,7 @@
 import { UserModel, type SafeUser } from "../models/user.models";
-import { generateAccessandRefreshToken } from "../services";
+import { issueTokenForUser } from "../services";
 import { ApiError, ApiResponse, asynchandler } from "../utils";
+import { authCookieOptions } from "../utils/cookie";
 import { emailVerificationMailgenContent, sendEmail } from "../utils/mail";
 
 export const registerUser = asynchandler(async (req, res) => {
@@ -68,28 +69,16 @@ export const loginUser = asynchandler(async (req, res) => {
       message: "Incorrect Password. Please try again.",
     });
   }
-  const { accessToken, refreshToken } = await generateAccessandRefreshToken(
-    user._id.toString(),
-  );
+  const { accessToken, refreshToken } = await issueTokenForUser(user);
 
   const loggedInUser: SafeUser = await UserModel.findById(user._id).select(
     "-password -refreshToken -emailVerificationToken -emailVerificationExpiry",
   );
 
-  const options: {
-    httpOnly: true;
-    secure: boolean;
-    sameSite: "strict";
-  } = {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-  };
-
   return res
     .status(200)
-    .cookie("accessToken", accessToken, options)
-    .cookie("refreshToken", refreshToken, options)
+    .cookie("accessToken", accessToken, authCookieOptions)
+    .cookie("refreshToken", refreshToken, authCookieOptions)
     .json(
       new ApiResponse({
         statuscode: 200,
