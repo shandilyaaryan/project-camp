@@ -74,14 +74,7 @@ export const registerUser = asynchandler(async (req, res) => {
 export const loginUser = asynchandler(async (req, res) => {
   const { email, password } = req.body;
 
-  if (!email) {
-    throw new ApiError({
-      statuscode: 400,
-      message: "Email is required",
-    });
-  }
-
-  const user = await UserModel.findOne({ email });
+  const user = await UserModel.findOne({ email }).select("+password");
   if (!user) {
     throw new ApiError({
       statuscode: 400,
@@ -105,11 +98,11 @@ export const loginUser = asynchandler(async (req, res) => {
 
   const options: {
     httpOnly: true;
-    secure: true;
+    secure: boolean;
     sameSite: "strict";
   } = {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
   };
 
