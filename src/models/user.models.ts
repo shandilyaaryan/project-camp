@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 import bcrypt from "bcrypt";
-import jwt, { type Secret } from "jsonwebtoken";
+import jwt, { type JwtPayload, type Secret } from "jsonwebtoken";
 import type { StringValue } from "ms";
 import crypto from "crypto";
 export interface IUser extends Document {
@@ -37,6 +37,12 @@ export type SafeUser = Omit<
   | "refreshToken"
   | "emailVerificationExpiry"
 >;
+
+export interface AccessTokenPayload extends JwtPayload {
+  _id: string;
+  email: string;
+  username: string;
+}
 
 const userSchema = new Schema<IUser>(
   {
@@ -103,7 +109,7 @@ userSchema.methods.generateAccessToken = function () {
       _id: this._id.toString(),
       email: this.email,
       username: this.username,
-    },
+    } as AccessTokenPayload,
     process.env.ACCESS_TOKEN_SECRET as Secret,
     { expiresIn: process.env.ACCESS_TOKEN_EXPIRY as StringValue },
   );

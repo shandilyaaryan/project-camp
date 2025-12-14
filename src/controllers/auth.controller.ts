@@ -1,4 +1,8 @@
-import { SAFE_USER_PROJECTION, UserModel, type SafeUser } from "../models/user.models";
+import {
+  SAFE_USER_PROJECTION,
+  UserModel,
+  type SafeUser,
+} from "../models/user.models";
 import { issueTokenForUser } from "../services";
 import { ApiError, ApiResponse, asynchandler } from "../utils";
 import { authCookieOptions } from "../utils/cookie";

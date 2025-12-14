@@ -1,10 +1,10 @@
-interface cookieOptionsInterface {
+interface authcookieOptionsInterface {
   httpOnly: true;
   secure: boolean;
   sameSite: "strict";
 }
 
-export const cookieOptions: cookieOptionsInterface = {
+export const authCookieOptions: authcookieOptionsInterface = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
   sameSite: "strict",
