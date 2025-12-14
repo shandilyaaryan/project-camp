@@ -19,7 +19,7 @@ export const authMiddleware = async (
   if (!token) {
     throw new ApiError({
       statuscode: 401,
-      message: "You are not logged in",
+      message: "Unauthorized user",
     });
   }
   let decoded: AccessTokenPayload;
