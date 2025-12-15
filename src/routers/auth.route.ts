@@ -1,12 +1,17 @@
 import { Router } from "express";
 import {
+  changePassword,
   getCurrentUser,
   loginUser,
   logoutUser,
   registerUser,
 } from "../controllers";
 import { authMiddleware, validate } from "../middlewares";
-import { loginSchema, registerSchema } from "../validators";
+import {
+  changePasswordSchema,
+  loginSchema,
+  registerSchema,
+} from "../validators";
 
 export const authRouter = Router();
 
@@ -16,3 +21,9 @@ authRouter.post("/login", validate(loginSchema), loginUser);
 // Protected Routes
 authRouter.post("/logout", authMiddleware, logoutUser);
 authRouter.get("/current-user", authMiddleware, getCurrentUser);
+authRouter.post(
+  "/change-password",
+  authMiddleware,
+  validate(changePasswordSchema),
+  changePassword,
+);

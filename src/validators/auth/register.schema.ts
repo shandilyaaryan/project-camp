@@ -1,6 +1,6 @@
 import z from "zod";
 
-const strongPasswordRegex = new RegExp(
+export const strongPasswordRegex = new RegExp(
   "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",
 );
 
