@@ -4,6 +4,7 @@ import {
   getCurrentUser,
   loginUser,
   logoutUser,
+  refreshAccessToken,
   registerUser,
 } from "../controllers";
 import { authMiddleware, validate } from "../middlewares";
@@ -27,3 +28,4 @@ authRouter.post(
   validate(changePasswordSchema),
   changePassword,
 );
+authRouter.post("/refresh-token", authMiddleware, refreshAccessToken);
