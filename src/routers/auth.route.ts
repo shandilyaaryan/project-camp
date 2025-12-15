@@ -6,6 +6,7 @@ import {
   logoutUser,
   refreshAccessToken,
   registerUser,
+  verifyEmail,
 } from "../controllers";
 import { authMiddleware, validate } from "../middlewares";
 import {
@@ -28,4 +29,5 @@ authRouter.post(
   validate(changePasswordSchema),
   changePassword,
 );
-authRouter.post("/refresh-token", authMiddleware, refreshAccessToken);
+authRouter.post("/refresh-token", refreshAccessToken);
+authRouter.post("/verify-email/:verificationToken", verifyEmail);
