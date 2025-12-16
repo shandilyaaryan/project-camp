@@ -17,18 +17,21 @@ export const verifyEmail = asynchandler(async (req, res) => {
     .update(verificationToken)
     .digest("hex");
 
-  const user = await UserModel.findOneAndUpdate({
-    emailVerificationToken: hashedToken,
-    emailVerificationExpiry: { $gt: Date.now() },
-  }, {
-    $set: {
-        isEmailVerified: true
+  const user = await UserModel.findOneAndUpdate(
+    {
+      emailVerificationToken: hashedToken,
+      emailVerificationExpiry: { $gt: Date.now() },
     },
-    $unset: {
+    {
+      $set: {
+        isEmailVerified: true,
+      },
+      $unset: {
         emailVerificationExpiry: "",
-        emailVerificationToken: ""
-    }
-  });
+        emailVerificationToken: "",
+      },
+    },
+  );
 
   if (!user) {
     throw new ApiError({
@@ -39,6 +42,9 @@ export const verifyEmail = asynchandler(async (req, res) => {
   return res.status(200).json(
     new ApiResponse({
       statuscode: 200,
+      data: {
+        isEmailVerified: true,
+      },
       message: "Email successfully verified",
     }),
   );
