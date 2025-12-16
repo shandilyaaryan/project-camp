@@ -13,8 +13,10 @@ import {
 import { authMiddleware, validate } from "../middlewares";
 import {
   changePasswordSchema,
+  forgotPasswordSchema,
   loginSchema,
   registerSchema,
+  resetPasswordSchema,
 } from "../validators";
 import { rateLimiter } from "../middlewares/ratelimiter.middleware";
 import { resetPassword } from "../controllers/auth/resetPassword.controller";
@@ -34,7 +36,12 @@ authRouter.post(
   rateLimiter(10, 300),
   verifyEmail,
 );
-authRouter.post("/forgot-password", rateLimiter(5, 60), forgotPassword);
+authRouter.post(
+  "/forgot-password",
+  rateLimiter(5, 60),
+  validate(forgotPasswordSchema),
+  forgotPassword,
+);
 
 // Protected Routes
 authRouter.post("/logout", authMiddleware, logoutUser);
@@ -52,7 +59,8 @@ authRouter.post(
   resendEmailVerification,
 );
 authRouter.post(
-  "reset-password/:resetToken",
+  "/reset-password/:resetToken",
   rateLimiter(3, 300),
+  validate(resetPasswordSchema),
   resetPassword,
 );
