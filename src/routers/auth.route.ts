@@ -64,3 +64,4 @@ authRouter.post(
   validate(resetPasswordSchema),
   resetPassword,
 );
+// Auth completed successfully
