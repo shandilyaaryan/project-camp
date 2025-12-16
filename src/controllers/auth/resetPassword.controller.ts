@@ -26,6 +26,7 @@ export const resetPassword = asynchandler(async (req, res) => {
 
   user.forgotPasswordToken = undefined;
   user.forgotPasswordExpiry = undefined;
+  user.refreshToken = undefined;
   user.password = newPassword;
   await user.save();
 

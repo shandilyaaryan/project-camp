@@ -17,6 +17,7 @@ import {
   registerSchema,
 } from "../validators";
 import { rateLimiter } from "../middlewares/ratelimiter.middleware";
+import { resetPassword } from "../controllers/auth/resetPassword.controller";
 
 export const authRouter = Router();
 
@@ -28,7 +29,11 @@ authRouter.post(
 );
 authRouter.post("/login", rateLimiter(5, 60), validate(loginSchema), loginUser);
 authRouter.post("/refresh-token", rateLimiter(5, 60), refreshAccessToken);
-authRouter.post("/verify-email/:verificationToken", rateLimiter(10, 300), verifyEmail);
+authRouter.post(
+  "/verify-email/:verificationToken",
+  rateLimiter(10, 300),
+  verifyEmail,
+);
 authRouter.post("/forgot-password", rateLimiter(5, 60), forgotPassword);
 
 // Protected Routes
@@ -45,4 +50,9 @@ authRouter.post(
   authMiddleware,
   rateLimiter(3, 300),
   resendEmailVerification,
+);
+authRouter.post(
+  "reset-password/:resetToken",
+  rateLimiter(3, 300),
+  resetPassword,
 );
