@@ -1,12 +1,12 @@
 interface ApiResponseInput<T> {
   statuscode: number;
-  data: T;
+  data?: T;
   message?: string;
 }
 
 export class ApiResponse<T> implements ApiResponseInput<T> {
   statuscode: number;
-  data: T;
+  data?: T;
   message?: string;
   success: boolean;
   constructor({ statuscode, data, message = "Success" }: ApiResponseInput<T>) {

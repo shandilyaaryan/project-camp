@@ -16,7 +16,6 @@ export const logoutUser = asynchandler(async (req, res, next) => {
     .json(
       new ApiResponse({
         statuscode: 200,
-        data: {},
         message: "User successfully logged out",
       }),
     );

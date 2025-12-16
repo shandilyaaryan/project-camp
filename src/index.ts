@@ -1,16 +1,19 @@
 import app from "./app";
 import { connectDb } from "./db/db";
+import { connectRedis } from "./utils";
 
 const port = process.env.PORT || 8000;
 
 const startserver = async () => {
-  try{
+  try {
+    await connectRedis();
     await connectDb();
     app.listen(port, () =>
       console.log(`Hello there server is running on http://localhost:${port}`),
     );
-  } catch {
-    console.error("Something went wrong!!")
+  } catch (err) {
+    console.error("Startup Failed: ", err);
+    process.exit(1);
   }
-}
+};
 startserver();

@@ -24,7 +24,6 @@ export const changePassword = asynchandler(async (req, res) => {
   return res.status(200).json(
     new ApiResponse({
       statuscode: 200,
-      data: {},
       message: "Password Successfully changed",
     }),
   );

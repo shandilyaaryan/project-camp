@@ -39,7 +39,6 @@ export const verifyEmail = asynchandler(async (req, res) => {
   return res.status(200).json(
     new ApiResponse({
       statuscode: 200,
-      data: {},
       message: "Email successfully verified",
     }),
   );

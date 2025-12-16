@@ -4,3 +4,4 @@ export * from "./async-handler";
 export * from "./constants";
 export * from "./mail";
 export * from "./cookie";
+export * from "./redis";

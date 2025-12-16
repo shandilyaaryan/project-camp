@@ -52,7 +52,6 @@ export const refreshAccessToken = asynchandler(async (req, res) => {
     .json(
       new ApiResponse({
         statuscode: 200,
-        data: {},
         message: "Access Token successfully refreshed",
       }),
     );

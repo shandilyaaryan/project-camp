@@ -13,7 +13,6 @@ export const forgotPassword = asynchandler(async (req, res) => {
     return res.status(200).json(
       new ApiResponse({
         statuscode: 200,
-        data: {},
         message: "Email successfully sent to the registered email address.",
       }),
     );
@@ -37,7 +36,6 @@ export const forgotPassword = asynchandler(async (req, res) => {
   return res.status(200).json(
     new ApiResponse({
       statuscode: 200,
-      data: {},
       message: "Email successfully sent to the registered email address.",
     }),
   );
