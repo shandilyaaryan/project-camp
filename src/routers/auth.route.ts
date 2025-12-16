@@ -7,6 +7,7 @@ import {
   logoutUser,
   refreshAccessToken,
   registerUser,
+  resendEmailVerification,
   verifyEmail,
 } from "../controllers";
 import { authMiddleware, validate } from "../middlewares";
@@ -27,7 +28,7 @@ authRouter.post(
 );
 authRouter.post("/login", rateLimiter(5, 60), validate(loginSchema), loginUser);
 authRouter.post("/refresh-token", rateLimiter(5, 60), refreshAccessToken);
-authRouter.post("/verify-email/:verificationToken", verifyEmail);
+authRouter.post("/verify-email/:verificationToken", rateLimiter(10, 300), verifyEmail);
 authRouter.post("/forgot-password", rateLimiter(5, 60), forgotPassword);
 
 // Protected Routes
@@ -38,4 +39,10 @@ authRouter.post(
   authMiddleware,
   validate(changePasswordSchema),
   changePassword,
+);
+authRouter.post(
+  "/resend-email-verification",
+  authMiddleware,
+  rateLimiter(3, 300),
+  resendEmailVerification,
 );
