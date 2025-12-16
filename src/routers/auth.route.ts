@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   changePassword,
+  forgotPassword,
   getCurrentUser,
   loginUser,
   logoutUser,
@@ -31,3 +32,4 @@ authRouter.post(
 );
 authRouter.post("/refresh-token", refreshAccessToken);
 authRouter.post("/verify-email/:verificationToken", verifyEmail);
+authRouter.post("/forgot-password", forgotPassword)

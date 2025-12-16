@@ -6,3 +6,4 @@ export * from "./auth/getCurrentUser.controller";
 export * from "./auth/changePassword.controller";
 export * from "./auth/refreshToken.controller";
 export * from "./auth/verifyEmail.controller";
+export * from "./auth/forgotPassword.controller";

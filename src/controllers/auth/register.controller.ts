@@ -32,7 +32,7 @@ export const registerUser = asynchandler(async (req, res) => {
     subject: "Please verify your email",
     mailGenContent: emailVerificationMailgenContent(
       user.username,
-      `${req.protocol}://${req.get("host")}/api/v1/users/verify-email/${unhashedToken}`,
+      `${req.protocol}://${req.get("host")}/api/v1/verify-email/${unhashedToken}`,
     ),
   });
   const createdUser: SafeUser = await UserModel.findById(user._id).select(
