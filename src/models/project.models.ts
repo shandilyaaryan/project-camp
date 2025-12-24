@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { UserRoleEnum } from "../utils";
 
 export interface IProject extends Document {
   name: string;
@@ -6,7 +7,7 @@ export interface IProject extends Document {
   owner: mongoose.Types.ObjectId;
   members: {
     userId: mongoose.Types.ObjectId;
-    role: "admin" | "project_admin" | "member";
+    role: typeof UserRoleEnum;
   }[];
   createdAt: Date;
   updatedAt: Date;
@@ -37,7 +38,7 @@ export const projectSchema = new Schema<IProject>(
         },
         role: {
           type: String,
-          enum: ["admin", "project_admin", "member"],
+          enum: Object.values(UserRoleEnum),
           default: "member",
         },
       },
