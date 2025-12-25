@@ -30,9 +30,6 @@ Project Camp is a production-ready backend API for collaborative project managem
 
 ## ✨ Features
 
-<table>
-<tr>
-<td width="50%">
 
 ### 🔐 Authentication & Security
 - JWT-based authentication (Access + Refresh tokens)
@@ -42,8 +39,6 @@ Project Camp is a production-ready backend API for collaborative project managem
 - SHA-256 hashed temporary tokens
 - Role-based access control (RBAC)
 
-</td>
-<td width="50%">
 
 ### 📊 Project Management
 - Full CRUD operations for projects
@@ -52,10 +47,6 @@ Project Camp is a production-ready backend API for collaborative project managem
 - Project notes and documentation
 - Task and subtask organization
 - File attachment support
-
-</td>
-</tr>
-</table>
 
 ### 🎯 Task Management
 
