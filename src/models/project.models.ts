@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
-import { UserRoleEnum } from "../utils";
+import { AvailableRole } from "../utils";
 
 export interface IProject extends Document {
   name: string;
@@ -7,7 +7,7 @@ export interface IProject extends Document {
   owner: mongoose.Types.ObjectId;
   members: {
     userId: mongoose.Types.ObjectId;
-    role: typeof UserRoleEnum;
+    role: (typeof AvailableRole)[number];
   }[];
   createdAt: Date;
   updatedAt: Date;
@@ -20,14 +20,18 @@ export const projectSchema = new Schema<IProject>(
       required: [true, "Project Name is required"],
       trim: true,
       index: true,
+      maxlength: [100, "Project name cannot exceed 100 characters"],
     },
     description: {
       type: String,
+      trim: true,
+      maxlength: [500, "Description cannot exceed 500 characters"],
     },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
+      index: true, // Add index for queries
     },
     members: [
       {
@@ -38,13 +42,14 @@ export const projectSchema = new Schema<IProject>(
         },
         role: {
           type: String,
-          enum: Object.values(UserRoleEnum),
+          enum: AvailableRole,
           default: "member",
+          required: true,
         },
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const ProjectModel = mongoose.model<IProject>("Project", projectSchema);
