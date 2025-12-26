@@ -18,8 +18,10 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/mongoose": "^5.11.97",
     "@types/nodemailer": "^7.0.4",
+    "@types/supertest": "^6.0.3",
     "globals": "^16.5.0",
-    "prettier": "^3.7.4"
+    "prettier": "^3.7.4",
+    "supertest": "^7.1.4"
   },
   "peerDependencies": {
     "typescript": "^5"

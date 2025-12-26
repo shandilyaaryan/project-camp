@@ -6,7 +6,10 @@ const port = process.env.PORT || 8000;
 
 const startserver = async () => {
   try {
-    await connectRedis();
+    const redis = await connectRedis();
+    if (!redis) {
+      console.log("Cannot connect to redis");
+    }
     await connectDb();
     app.listen(port, () =>
       console.log(`Hello there server is running on http://localhost:${port}`),
