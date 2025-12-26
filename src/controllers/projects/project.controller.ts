@@ -4,14 +4,6 @@ import { ApiError, ApiResponse, asynchandler, UserRoleEnum } from "../../utils";
 export const createProject = asynchandler(async (req, res) => {
   const { name, description } = req.body;
 
-  // Validate required fields
-  if (!name?.trim()) {
-    throw new ApiError({
-      statuscode: 400,
-      message: "Project name is required.",
-    });
-  }
-
   const ownerId = req.user?._id;
 
   if (!ownerId) {
