@@ -1,0 +1,10 @@
+node_modules
+.git
+.gitignore
+.env
+dist
+coverage
+tests
+README.md
+PRD.md
+.github
