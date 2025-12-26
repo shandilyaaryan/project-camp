@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { authRouter, healthCheckRouter } from "./routers";
 import { errmiddleware } from "./middlewares";
+import { projectRouter } from "./routers/project.route";
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(cookieParser());
 
 app.use("/api/v1/healthcheck", healthCheckRouter);
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/projects", projectRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello there");
