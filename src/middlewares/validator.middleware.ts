@@ -8,7 +8,7 @@ export const validate =
 
     if (!parsed.success) {
       throw new ApiError({
-        statuscode: 400,
+        statusCode: 400,
         message: "Validation Failed",
         errors: parsed.error.issues.map((err) => ({
           field: err.path.join("."),

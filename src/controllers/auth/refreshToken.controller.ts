@@ -16,7 +16,7 @@ export const refreshAccessToken = asynchandler(async (req, res) => {
   const userRefreshToken = req.cookies?.refreshToken;
   if (!userRefreshToken) {
     throw new ApiError({
-      statuscode: 401,
+      statusCode: 401,
       message: "Refresh Token not found",
     });
   }
@@ -28,7 +28,7 @@ export const refreshAccessToken = asynchandler(async (req, res) => {
     ) as RefreshTokenPayload;
   } catch (error) {
     throw new ApiError({
-      statuscode: 401,
+      statusCode: 401,
       message: "Token is invalid or expired",
     });
   }
@@ -39,7 +39,7 @@ export const refreshAccessToken = asynchandler(async (req, res) => {
   });
   if (!user) {
     throw new ApiError({
-      statuscode: 401,
+      statusCode: 401,
       message: "Invalid token",
     });
   }
@@ -51,7 +51,7 @@ export const refreshAccessToken = asynchandler(async (req, res) => {
     .cookie("refreshToken", refreshToken, authCookieOptions)
     .json(
       new ApiResponse({
-        statuscode: 200,
+        statusCode: 200,
         message: "Access Token successfully refreshed",
       }),
     );

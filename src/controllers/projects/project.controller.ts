@@ -8,7 +8,7 @@ export const createProject = asynchandler(async (req, res) => {
 
   if (!ownerId) {
     throw new ApiError({
-      statuscode: 401,
+      statusCode: 401,
       message: "Unauthorized: User not logged in.",
     });
   }
@@ -21,7 +21,7 @@ export const createProject = asynchandler(async (req, res) => {
 
   if (existingProject) {
     throw new ApiError({
-      statuscode: 409,
+      statusCode: 409,
       message: "A project with this name already exists.",
     });
   }
@@ -36,7 +36,7 @@ export const createProject = asynchandler(async (req, res) => {
 
   return res.status(201).json(
     new ApiResponse({
-      statuscode: 201,
+      statusCode: 201,
       data: project,
       message: "Project created successfully.",
     }),

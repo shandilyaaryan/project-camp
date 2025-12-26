@@ -12,13 +12,13 @@ export const resendEmailVerification = asynchandler(async (req, res) => {
   const user = await UserModel.findById(id);
   if (!user) {
     throw new ApiError({
-      statuscode: 400,
+      statusCode: 400,
       message: "User does not exist",
     });
   }
   if (user.isEmailVerified) {
     throw new ApiError({
-      statuscode: 409,
+      statusCode: 409,
       message: "Email is already verified",
     });
   }
@@ -37,7 +37,7 @@ export const resendEmailVerification = asynchandler(async (req, res) => {
   });
   return res.status(200).json(
     new ApiResponse({
-      statuscode: 200,
+      statusCode: 200,
       message: "Email sent successfully to the registered email",
     }),
   );

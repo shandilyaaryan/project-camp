@@ -15,7 +15,7 @@ export const rateLimiter = (limit: number, windowSec: number) => {
       if (count > limit) {
         return res.status(429).json(
           new ApiResponse({
-            statuscode: 429,
+            statusCode: 429,
             message: "Too many requests",
           }),
         );

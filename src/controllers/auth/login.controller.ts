@@ -13,14 +13,14 @@ export const loginUser = asynchandler(async (req, res) => {
   const user = await UserModel.findOne({ email }).select("+password");
   if (!user) {
     throw new ApiError({
-      statuscode: 400,
+      statusCode: 400,
       message: "You are not registered please register before login",
     });
   }
   const isValidPassword = await user.comparePassword(password);
   if (!isValidPassword) {
     throw new ApiError({
-      statuscode: 400,
+      statusCode: 400,
       message: "Incorrect Password. Please try again.",
     });
   }
@@ -36,7 +36,7 @@ export const loginUser = asynchandler(async (req, res) => {
     .cookie("refreshToken", refreshToken, authCookieOptions)
     .json(
       new ApiResponse({
-        statuscode: 200,
+        statusCode: 200,
         data: {
           user: loggedInUser,
         },

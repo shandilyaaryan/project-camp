@@ -7,7 +7,7 @@ export const resetPassword = asynchandler(async (req, res) => {
   const newPassword = req.body.newPassword;
   if (!token || !newPassword) {
     throw new ApiError({
-      statuscode: 400,
+      statusCode: 400,
       message: "Token or password not found",
     });
   }
@@ -19,7 +19,7 @@ export const resetPassword = asynchandler(async (req, res) => {
 
   if (!user) {
     throw new ApiError({
-      statuscode: 400,
+      statusCode: 400,
       message: "Invalid or expired token found",
     });
   }
@@ -32,7 +32,7 @@ export const resetPassword = asynchandler(async (req, res) => {
 
   return res.status(200).json(
     new ApiResponse({
-      statuscode: 200,
+      statusCode: 200,
       message: "Password successfully updated",
     }),
   );

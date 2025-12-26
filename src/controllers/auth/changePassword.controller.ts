@@ -7,14 +7,14 @@ export const changePassword = asynchandler(async (req, res) => {
   const user = await UserModel.findById(req.user?._id).select("+password");
   if (!user) {
     throw new ApiError({
-      statuscode: 404,
+      statusCode: 404,
       message: "User not found",
     });
   }
   const isPasswordCorrect = await user.comparePassword(oldPassword);
   if (!isPasswordCorrect) {
     throw new ApiError({
-      statuscode: 401,
+      statusCode: 401,
       message: "Old Password is incorrect",
     });
   }
@@ -23,7 +23,7 @@ export const changePassword = asynchandler(async (req, res) => {
   await user.save();
   return res.status(200).json(
     new ApiResponse({
-      statuscode: 200,
+      statusCode: 200,
       message: "Password Successfully changed",
     }),
   );

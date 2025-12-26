@@ -7,7 +7,7 @@ export const verifyEmail = asynchandler(async (req, res) => {
 
   if (!verificationToken) {
     throw new ApiError({
-      statuscode: 401,
+      statusCode: 401,
       message: "Verification token is missing or not found",
     });
   }
@@ -35,13 +35,13 @@ export const verifyEmail = asynchandler(async (req, res) => {
 
   if (!user) {
     throw new ApiError({
-      statuscode: 400,
+      statusCode: 400,
       message: "Invalid or Expired Token",
     });
   }
   return res.status(200).json(
     new ApiResponse({
-      statuscode: 200,
+      statusCode: 200,
       data: {
         isEmailVerified: true,
       },

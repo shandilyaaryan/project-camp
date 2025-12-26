@@ -9,7 +9,7 @@ export const registerUser = asynchandler(async (req, res) => {
   });
   if (existingUser) {
     throw new ApiError({
-      statuscode: 409,
+      statusCode: 409,
       message: "User with username or email already exists",
     });
   }
@@ -41,7 +41,7 @@ export const registerUser = asynchandler(async (req, res) => {
 
   return res.status(201).json(
     new ApiResponse({
-      statuscode: 201,
+      statusCode: 201,
       data: { user: createdUser },
       message:
         "User registered successfully and verification email has been sent to your email",

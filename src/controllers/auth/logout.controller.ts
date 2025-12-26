@@ -15,7 +15,7 @@ export const logoutUser = asynchandler(async (req, res, next) => {
     .clearCookie("refreshToken", authCookieOptions)
     .json(
       new ApiResponse({
-        statuscode: 200,
+        statusCode: 200,
         message: "User successfully logged out",
       }),
     );

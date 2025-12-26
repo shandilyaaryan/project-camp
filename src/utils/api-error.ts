@@ -1,17 +1,17 @@
 interface ApiErrorInput {
-  statuscode: number;
+  statusCode: number;
   message: string;
   errors?: string[] | Object[];
   stack?: string;
 }
 
 export class ApiError extends Error {
-  statuscode: number;
+  statusCode: number;
   errors: string[] | Object[];
 
-  constructor({ statuscode, message, errors = [], stack }: ApiErrorInput) {
+  constructor({ statusCode, message, errors = [], stack }: ApiErrorInput) {
     super(message);
-    this.statuscode = statuscode;
+    this.statusCode = statusCode;
     this.errors = errors;
 
     // Use provided stack or generate new one

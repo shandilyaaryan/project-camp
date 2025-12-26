@@ -18,7 +18,7 @@ export const authMiddleware = async (
     req.header("Authorization")?.replace("Bearer ", "");
   if (!token) {
     throw new ApiError({
-      statuscode: 401,
+      statusCode: 401,
       message: "Unauthorized user",
     });
   }
@@ -30,7 +30,7 @@ export const authMiddleware = async (
     ) as AccessTokenPayload;
   } catch (err) {
     throw new ApiError({
-      statuscode: 401,
+      statusCode: 401,
       message: "Invalid or expired token",
     });
   }
@@ -39,7 +39,7 @@ export const authMiddleware = async (
     .lean();
   if (!user) {
     throw new ApiError({
-      statuscode: 401,
+      statusCode: 401,
       message: "Invalid access token",
     });
   }
