@@ -9,3 +9,4 @@ export * from "./auth/verifyEmail.controller";
 export * from "./auth/forgotPassword.controller";
 export * from "./auth/resendEmail.controller";
 export * from "./projects/project.controller";
+export * from "./projects/createProject.controller";
