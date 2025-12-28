@@ -1,11 +1,13 @@
 import { ApiResponse, asynchandler } from "../../utils";
 
 export const getCurrentUser = asynchandler((req, res) => {
-    return res.status(200).json(
-        new ApiResponse({
-            statusCode: 200,
-            data: req.user,
-            message: "Current user fetched successfully"
-        })
-    )
-})
+  return res.status(200).json(
+    new ApiResponse({
+      statusCode: 200,
+      data: {
+        user: req?.user,
+      },
+      message: "Current user fetched successfully",
+    }),
+  );
+});

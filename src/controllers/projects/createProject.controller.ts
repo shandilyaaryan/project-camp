@@ -37,7 +37,7 @@ export const createProject = asynchandler(async (req, res) => {
   return res.status(201).json(
     new ApiResponse({
       statusCode: 201,
-      data: project,
+      data: { project },
       message: "Project created successfully.",
     }),
   );

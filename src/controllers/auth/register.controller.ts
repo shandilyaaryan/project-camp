@@ -1,5 +1,11 @@
 import { SAFE_USER_PROJECTION, UserModel, type SafeUser } from "../../models";
-import { ApiError, ApiResponse, asynchandler, emailVerificationMailgenContent, sendEmail } from "../../utils";
+import {
+  ApiError,
+  ApiResponse,
+  asynchandler,
+  emailVerificationMailgenContent,
+  sendEmail,
+} from "../../utils";
 
 export const registerUser = asynchandler(async (req, res) => {
   const { email, username, password } = req.body;
@@ -42,7 +48,7 @@ export const registerUser = asynchandler(async (req, res) => {
   return res.status(201).json(
     new ApiResponse({
       statusCode: 201,
-      data: { user: createdUser },
+      data: { createdUser },
       message:
         "User registered successfully and verification email has been sent to your email",
     }),

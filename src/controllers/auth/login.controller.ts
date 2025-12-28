@@ -38,7 +38,7 @@ export const loginUser = asynchandler(async (req, res) => {
       new ApiResponse({
         statusCode: 200,
         data: {
-          user: loggedInUser,
+          loggedInUser,
         },
         message: "User logged in successfully",
       }),

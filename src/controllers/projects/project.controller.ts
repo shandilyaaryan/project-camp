@@ -18,7 +18,7 @@ export const getUserProject = asynchandler(async (req, res) => {
   return res.status(200).json(
     new ApiResponse({
       statusCode: 200,
-      data: projects,
+      data: { projects },
     }),
   );
 });
