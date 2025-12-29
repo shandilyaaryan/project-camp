@@ -11,3 +11,4 @@ export * from "./auth/resendEmail.controller";
 export * from "./projects/project.controller";
 export * from "./projects/createProject.controller";
 export * from "./projects/getProjectById.controller";
+export * from "./projects/updateProject.controller";

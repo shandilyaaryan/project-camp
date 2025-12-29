@@ -1,7 +1,13 @@
 import { Router } from "express";
-import { createProject, getProjectById, getUserProject } from "../controllers";
+import {
+  createProject,
+  getProjectById,
+  getUserProject,
+  updateProject,
+} from "../controllers";
 import { authMiddleware, paramValidator, validate } from "../middlewares";
 import { createProjectSchema, projectIdSchema } from "../validators";
+import { updateProjectSchema } from "../validators/projects/updateProject.schema";
 
 export const projectRouter = Router();
 
@@ -17,4 +23,11 @@ projectRouter.get(
   paramValidator(projectIdSchema),
   authMiddleware,
   getProjectById,
+);
+projectRouter.put(
+  "/:projectId",
+  paramValidator(projectIdSchema),
+  authMiddleware,
+  validate(updateProjectSchema),
+  updateProject,
 );
