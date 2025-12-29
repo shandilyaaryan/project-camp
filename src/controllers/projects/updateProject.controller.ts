@@ -1,5 +1,5 @@
 import { ProjectModel } from "../../models";
-import { ApiError, ApiResponse, asynchandler } from "../../utils";
+import { ApiError, ApiResponse, asynchandler, ErrorMessages } from "../../utils";
 
 export const updateProject = asynchandler(async (req, res) => {
   const { projectId } = req.params;
@@ -9,7 +9,7 @@ export const updateProject = asynchandler(async (req, res) => {
   if (!user) {
     throw new ApiError({
       statusCode: 401,
-      message: "Unauthorized: Please log in.",
+      message: ErrorMessages.UNAUTHORIZED,
     });
   }
 
@@ -34,7 +34,7 @@ export const updateProject = asynchandler(async (req, res) => {
   if (!project) {
     throw new ApiError({
       statusCode: 404,
-      message: "Project not found.",
+      message: ErrorMessages.PROJECT_NOT_FOUND,
     });
   }
 

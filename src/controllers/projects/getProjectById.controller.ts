@@ -1,5 +1,5 @@
 import { ProjectModel } from "../../models";
-import { ApiError, ApiResponse, asynchandler } from "../../utils";
+import { ApiError, ApiResponse, asynchandler, ErrorMessages } from "../../utils";
 
 export const getProjectById = asynchandler(async (req, res) => {
   const { projectId } = req.params;
@@ -7,7 +7,7 @@ export const getProjectById = asynchandler(async (req, res) => {
   if (!projectId) {
     throw new ApiError({
       statusCode: 400,
-      message: "Project ID is missing.",
+      message: ErrorMessages.PROJECT_NOT_FOUND,
     });
   }
 
@@ -16,7 +16,7 @@ export const getProjectById = asynchandler(async (req, res) => {
   if (!user) {
     throw new ApiError({
       statusCode: 401,
-      message: "Unauthorized: User not logged in",
+      message: ErrorMessages.UNAUTHORIZED,
     });
   }
 
@@ -28,7 +28,7 @@ export const getProjectById = asynchandler(async (req, res) => {
   if (!project) {
     throw new ApiError({
       statusCode: 404,
-      message: "Project not found",
+      message: ErrorMessages.PROJECT_NOT_FOUND,
     });
   }
 

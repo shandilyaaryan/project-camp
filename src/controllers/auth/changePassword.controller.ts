@@ -1,5 +1,5 @@
 import { UserModel } from "../../models";
-import { ApiError, ApiResponse, asynchandler } from "../../utils";
+import { ApiError, ApiResponse, asynchandler, ErrorMessages } from "../../utils";
 
 export const changePassword = asynchandler(async (req, res) => {
   const oldPassword = req.body.oldPassword;
@@ -8,7 +8,7 @@ export const changePassword = asynchandler(async (req, res) => {
   if (!user) {
     throw new ApiError({
       statusCode: 404,
-      message: "User not found",
+      message: ErrorMessages.UNAUTHORIZED,
     });
   }
   const isPasswordCorrect = await user.comparePassword(oldPassword);

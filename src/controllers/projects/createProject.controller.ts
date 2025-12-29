@@ -1,5 +1,5 @@
 import { ProjectModel } from "../../models";
-import { ApiError, ApiResponse, asynchandler, UserRoleEnum } from "../../utils";
+import { ApiError, ApiResponse, asynchandler, ErrorMessages, UserRoleEnum } from "../../utils";
 
 export const createProject = asynchandler(async (req, res) => {
   const { name, description } = req.body;
@@ -9,7 +9,7 @@ export const createProject = asynchandler(async (req, res) => {
   if (!ownerId) {
     throw new ApiError({
       statusCode: 401,
-      message: "Unauthorized: User not logged in.",
+      message: ErrorMessages.UNAUTHORIZED,
     });
   }
 
