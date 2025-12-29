@@ -82,8 +82,10 @@ describe("Project API Integration Tests", () => {
             password: "Password123!"
         }).expect(200);
 
+        console.log("LOGIN RESPONSE BODY:", JSON.stringify(loginRes.body, null, 2));
+
         userToken = getAccessTokenFromCookie(loginRes);
-        userId = loginRes.body.data.user._id;
+        userId = userId = loginRes.body.data.loggedInUser._id;
         
         expect(userToken).toBeDefined();
         expect(userToken.length).toBeGreaterThan(10);
@@ -103,8 +105,14 @@ describe("Project API Integration Tests", () => {
             password: "Password123!"
         }).expect(200);
 
-        secondUserToken = getAccessTokenFromCookie(loginRes);
-        secondUserId = loginRes.body.data.user._id;
+        // Extract tokens from cookies for the second user
+        const setCookieHeader = loginRes.headers["set-cookie"];
+        const accessTokenCookie = setCookieHeader.find((cookie: string) =>
+            cookie.startsWith("accessToken=")
+        );
+
+        secondUserToken = accessTokenCookie ? accessTokenCookie.split(";")[0].split("=")[1] : "";
+        secondUserId = loginRes.body.data.loggedInUser._id;
 
         expect(secondUserToken).toBeDefined();
     });
@@ -121,9 +129,9 @@ describe("Project API Integration Tests", () => {
         });
 
       expect(res.status).toBe(201);
-      expect(res.body.data.name).toBe("Project Alpha");
-      expect(res.body.data.owner).toBe(userId);
-      expect(res.body.data.members[0].role).toBe(UserRoleEnum.ADMIN);
+      expect(res.body.data.project.name).toBe("Project Alpha");
+      expect(res.body.data.project.owner).toBe(userId);
+      expect(res.body.data.project.members[0].role).toBe(UserRoleEnum.ADMIN);
     });
 
     it("should fail if name is missing", async () => {
@@ -158,9 +166,9 @@ describe("Project API Integration Tests", () => {
         .set("Authorization", `Bearer ${userToken}`)
         .expect(200);
 
-      expect(Array.isArray(res.body.data)).toBe(true);
-      expect(res.body.data.length).toBeGreaterThanOrEqual(1);
-      expect(res.body.data[0].name).toBe("Project Alpha");
+      expect(Array.isArray(res.body.data.projects)).toBe(true);
+      expect(res.body.data.projects.length).toBeGreaterThanOrEqual(1);
+      expect(res.body.data.projects[0].name).toBe("Project Alpha");
     });
 
     it("should return empty list if user has no projects", async () => {
@@ -174,14 +182,20 @@ describe("Project API Integration Tests", () => {
             email: "user3@example.com",
             password: "Password123!"
         });
-        const token = getAccessTokenFromCookie(loginRes);
+        
+        // Extract tokens from cookies
+        const setCookieHeader = loginRes.headers["set-cookie"];
+        const accessTokenCookie = setCookieHeader.find((cookie: string) =>
+            cookie.startsWith("accessToken=")
+        );
+        const token = accessTokenCookie ? accessTokenCookie.split(";")[0].split("=")[1] : "";
 
         const res = await request(app)
             .get("/api/v1/projects")
             .set("Authorization", `Bearer ${token}`)
             .expect(200);
         
-        expect(res.body.data).toHaveLength(0);
+        expect(res.body.data.projects).toHaveLength(0);
     });
   });
 
@@ -230,7 +244,7 @@ describe("Project API Integration Tests", () => {
             });
 
         expect(res.status).toBe(201);
-        expect(res.body.data.description).toBe(xssPayload);
+        expect(res.body.data.project.description).toBe(xssPayload);
         // Note: The API stores it as is. This test confirms it doesn't crash 
         // or execute it on the server. Frontend must sanitize.
     });
