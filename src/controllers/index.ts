@@ -12,3 +12,4 @@ export * from "./projects/project.controller";
 export * from "./projects/createProject.controller";
 export * from "./projects/getProjectById.controller";
 export * from "./projects/updateProject.controller";
+export * from "./projects/deleteProject.controller";

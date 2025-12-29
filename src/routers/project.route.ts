@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   createProject,
+  deleteProject,
   getProjectById,
   getUserProject,
   updateProject,
@@ -30,4 +31,10 @@ projectRouter.put(
   authMiddleware,
   validate(updateProjectSchema),
   updateProject,
+);
+projectRouter.delete(
+  "/:projectId",
+  paramValidator(projectIdSchema),
+  authMiddleware,
+  deleteProject,
 );
