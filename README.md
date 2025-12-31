@@ -63,16 +63,6 @@ Project Camp is a production-ready backend API for collaborative project managem
 - Automated verification and reset emails
 - Customizable branding
 
-## 🛠️ Tech Stack
-
-```mermaid
-graph LR
-    A[Node.js + Express] --> B[TypeScript]
-    B --> C[MongoDB + Mongoose]
-    C --> D[JWT Authentication]
-    D --> E[Nodemailer + Mailgen]
-```
-
 **Core Technologies:**
 - **Runtime:** Node.js 18+
 - **Framework:** Express.js 4.x
