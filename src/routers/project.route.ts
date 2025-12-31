@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  addMember,
   createProject,
   deleteProject,
   getProjectById,
@@ -7,7 +8,11 @@ import {
   updateProject,
 } from "../controllers";
 import { authMiddleware, paramValidator, validate } from "../middlewares";
-import { createProjectSchema, projectIdSchema } from "../validators";
+import {
+  addMemberSchema,
+  createProjectSchema,
+  projectIdSchema,
+} from "../validators";
 import { updateProjectSchema } from "../validators/projects/updateProject.schema";
 
 export const projectRouter = Router();
@@ -37,4 +42,11 @@ projectRouter.delete(
   paramValidator(projectIdSchema),
   authMiddleware,
   deleteProject,
+);
+projectRouter.post(
+  "/:projectId/members",
+  paramValidator(projectIdSchema),
+  authMiddleware,
+  validate(addMemberSchema),
+  addMember,
 );
