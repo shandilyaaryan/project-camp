@@ -7,14 +7,17 @@ import {
   getUserProject,
   listProjectMember,
   updateProject,
+  updateRole,
 } from "../controllers";
 import { authMiddleware, paramValidator, validate } from "../middlewares";
 import {
   addMemberSchema,
   createProjectSchema,
   projectIdSchema,
+  updateRoleSchema,
 } from "../validators";
 import { updateProjectSchema } from "../validators/projects/updateProject.schema";
+import { projectAndUserParamSchema } from "../validators/projects/projectAndUserParam.schema";
 
 export const projectRouter = Router();
 
@@ -56,4 +59,11 @@ projectRouter.get(
   paramValidator(projectIdSchema),
   authMiddleware,
   listProjectMember,
+);
+projectRouter.put(
+  "/:projectId/members/:userId",
+  paramValidator(projectAndUserParamSchema),
+  validate(updateRoleSchema),
+  authMiddleware,
+  updateRole,
 );
