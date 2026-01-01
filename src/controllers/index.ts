@@ -14,3 +14,4 @@ export * from "./projects/getProjectById.controller";
 export * from "./projects/updateProject.controller";
 export * from "./projects/deleteProject.controller";
 export * from "./projects/addMember.controller";
+export * from "./projects/listProjectMember.controller";

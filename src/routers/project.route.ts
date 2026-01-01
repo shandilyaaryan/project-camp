@@ -5,6 +5,7 @@ import {
   deleteProject,
   getProjectById,
   getUserProject,
+  listProjectMember,
   updateProject,
 } from "../controllers";
 import { authMiddleware, paramValidator, validate } from "../middlewares";
@@ -49,4 +50,10 @@ projectRouter.post(
   authMiddleware,
   validate(addMemberSchema),
   addMember,
+);
+projectRouter.get(
+  "/:projectId/members",
+  paramValidator(projectIdSchema),
+  authMiddleware,
+  listProjectMember,
 );
