@@ -36,10 +36,7 @@ export const removeProjectMember = asynchandler(async (req, res) => {
     });
   }
 
-  console.log("DEBUG REMOVE MEMBER:");
-  console.log("Project Owner:", project.owner.toString());
-  console.log("Param UserID:", userId);
-  console.log("Req User ID:", user._id.toString());
+
 
   if (project.owner.toString() === userId?.toString()) {
     throw new ApiError({

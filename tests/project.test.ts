@@ -82,7 +82,7 @@ describe("Project API Integration Tests", () => {
             password: "Password123!"
         }).expect(200);
 
-        console.log("LOGIN RESPONSE BODY:", JSON.stringify(loginRes.body, null, 2));
+
 
         userToken = getAccessTokenFromCookie(loginRes);
         userId = userId = loginRes.body.data.loggedInUser._id;
@@ -227,8 +227,7 @@ describe("Project API Integration Tests", () => {
         const accessTokenCookie = setCookieHeader.find((cookie: string) => cookie.startsWith("accessToken="));
         user3Token = accessTokenCookie ? accessTokenCookie.split(";")[0].split("=")[1] : "";
 
-        console.log("DEBUG: Owner ID (User1):", userId);
-        console.log("DEBUG: Member ID (User3):", user3Id);
+
     });
 
     it("should allow Owner (User 1) to add a new member (User 3)", async () => {
