@@ -16,3 +16,4 @@ export * from "./projects/deleteProject.controller";
 export * from "./projects/addMember.controller";
 export * from "./projects/listProjectMember.controller";
 export * from "./projects/updateRole.controller";
+export * from "./projects/removeProjectMember.controller";

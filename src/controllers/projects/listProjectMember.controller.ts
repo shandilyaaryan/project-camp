@@ -12,8 +12,8 @@ export const listProjectMember = asynchandler(async (req, res) => {
 
   if (!projectId) {
     throw new ApiError({
-      statusCode: 404,
-      message: "Project ID is missing",
+      statusCode: 400,
+      message: ErrorMessages.BAD_REQUEST,
     });
   }
 

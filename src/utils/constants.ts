@@ -17,4 +17,5 @@ export const AvailableTaskStatus = Object.values(TaskStatusEnum);
 export const ErrorMessages = {
   UNAUTHORIZED: "Unauthorized: User not logged in.",
   PROJECT_NOT_FOUND: "Project not found",
+  BAD_REQUEST: "Bad Request."
 };

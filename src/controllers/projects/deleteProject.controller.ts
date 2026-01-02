@@ -20,7 +20,7 @@ export const deleteProject = asynchandler(async (req, res) => {
   if (!projectId) {
     throw new ApiError({
       statusCode: 404,
-      message: ErrorMessages.PROJECT_NOT_FOUND,
+      message: ErrorMessages.BAD_REQUEST,
     });
   }
 

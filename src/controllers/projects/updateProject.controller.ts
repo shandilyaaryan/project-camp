@@ -16,7 +16,7 @@ export const updateProject = asynchandler(async (req, res) => {
   if (!projectId) {
     throw new ApiError({
       statusCode: 400,
-      message: "Project ID is missing.",
+      message: ErrorMessages.BAD_REQUEST,
     });
   }
 

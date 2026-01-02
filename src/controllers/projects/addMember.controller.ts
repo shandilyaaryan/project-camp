@@ -11,6 +11,12 @@ export const addMember = asynchandler(async (req, res) => {
   const { projectId } = req.params;
   const user = req?.user;
 
+  if (!projectId) {
+    throw new ApiError({
+      statusCode: 400,
+      message: ErrorMessages.BAD_REQUEST,
+    });
+  }
   if (!user) {
     throw new ApiError({
       statusCode: 401,

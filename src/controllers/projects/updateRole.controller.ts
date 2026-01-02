@@ -15,13 +15,13 @@ export const updateRole = asynchandler(async (req, res) => {
   if (!projectId) {
     throw new ApiError({
       statusCode: 400,
-      message: "Project ID is missing",
+      message: ErrorMessages.BAD_REQUEST,
     });
   }
   if (!role) {
     throw new ApiError({
       statusCode: 400,
-      message: "Role is missing",
+      message: ErrorMessages.BAD_REQUEST,
     });
   }
   if (!user) {
@@ -33,7 +33,7 @@ export const updateRole = asynchandler(async (req, res) => {
   if (!userId) {
     throw new ApiError({
       statusCode: 400,
-      message: "UserId is missing",
+      message: ErrorMessages.BAD_REQUEST,
     });
   }
   const project = await ProjectModel.findOne({

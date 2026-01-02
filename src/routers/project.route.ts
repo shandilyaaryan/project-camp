@@ -6,6 +6,7 @@ import {
   getProjectById,
   getUserProject,
   listProjectMember,
+  removeProjectMember,
   updateProject,
   updateRole,
 } from "../controllers";
@@ -66,4 +67,10 @@ projectRouter.put(
   validate(updateRoleSchema),
   authMiddleware,
   updateRole,
+);
+projectRouter.delete(
+  "/:projectId/members/:userId",
+  paramValidator(projectAndUserParamSchema),
+  authMiddleware,
+  removeProjectMember,
 );
