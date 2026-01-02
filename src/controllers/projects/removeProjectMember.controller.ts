@@ -36,7 +36,12 @@ export const removeProjectMember = asynchandler(async (req, res) => {
     });
   }
 
-  if (project.owner.toString() === user._id.toString()) {
+  console.log("DEBUG REMOVE MEMBER:");
+  console.log("Project Owner:", project.owner.toString());
+  console.log("Param UserID:", userId);
+  console.log("Req User ID:", user._id.toString());
+
+  if (project.owner.toString() === userId?.toString()) {
     throw new ApiError({
       statusCode: 403,
       message: "Cannot remove the project owner",
