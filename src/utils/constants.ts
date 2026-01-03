@@ -14,8 +14,17 @@ export const TaskStatusEnum = {
 
 export const AvailableTaskStatus = Object.values(TaskStatusEnum);
 
+export const TaskPriorityEnum = {
+  P1: "priority_1",
+  P2: "priority_2",
+  P3: "priority_3",
+  P4: "priority_4",
+};
+
+export const AvailableTaskPriority = Object.values(TaskPriorityEnum);
+
 export const ErrorMessages = {
   UNAUTHORIZED: "Unauthorized: User not logged in.",
   PROJECT_NOT_FOUND: "Project not found",
-  BAD_REQUEST: "Bad Request."
+  BAD_REQUEST: "Bad Request.",
 };

@@ -2,7 +2,7 @@ import {
   SAFE_USER_PROJECTION,
   UserModel,
   type SafeUser,
-} from "../../models/user.models";
+} from "../../models/user.model";
 import { issueTokenForUser } from "../../services";
 import { ApiError, ApiResponse, asynchandler } from "../../utils";
 import { authCookieOptions } from "../../utils/cookie";
