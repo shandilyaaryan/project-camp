@@ -12,13 +12,15 @@
 **A collaborative project management backend built for modern teams**
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=flat-square&logo=node.js)](https://nodejs.org/)
+[![Bun](https://img.shields.io/badge/Bun-1.x-black?style=flat-square&logo=bun)](https://bun.sh/)
 [![Express.js](https://img.shields.io/badge/Express.js-4.x-black?style=flat-square&logo=express)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-47A248?style=flat-square&logo=mongodb)](https://www.mongodb.com/)
+[![Redis](https://img.shields.io/badge/Redis-Cache%20%7C%20Queue-DC382D?style=flat-square&logo=redis)](https://redis.io/)
+[![Docker](https://img.shields.io/badge/Docker-Containerization-0db7ed?style=flat-square&logo=docker)](https://www.docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-[Features](#-features) • [Quick Start](#-quick-start) • [API Documentation](#-api-documentation) • [Contributing](#-contributing)
+[Features](#-features) • [Quick Start](#-quick-start) • [API Documentation](#-api-documentation) • [Testing](#-testing) • [Contributing](#-contributing)
 
 </div>
 
@@ -26,30 +28,29 @@
 
 ## 🚀 Overview
 
-Project Camp is a production-ready backend API for collaborative project management, inspired by Basecamp. Built with TypeScript, it provides a robust foundation for team collaboration with enterprise-grade authentication, role-based access control, and a comprehensive task management system.
+Project Camp is a production-ready backend API for collaborative project management. Built with **TypeScript** and powered by **Bun**, it offers a robust foundation for team collaboration with enterprise-grade authentication, fine-grained role-based access control (RBAC), and a comprehensive project & member management system. The entire application is containerized with Docker for seamless deployment.
 
 ## ✨ Features
 
-
 ### 🔐 Authentication & Security
-- JWT-based authentication (Access + Refresh tokens)
-- Secure password hashing with bcrypt
-- Email verification flow
+- **JWT-based authentication** (Access + Refresh tokens) with `httpOnly` cookies
+- Secure password hashing with `bcrypt`
+- Email verification flow with temporary tokens
 - Password reset functionality
-- SHA-256 hashed temporary tokens
-- Role-based access control (RBAC)
-
+- Role-based access control (RBAC) via middleware
+- **API Rate Limiting** using Redis
+- Input validation with Zod schemas
+- Protection against common web exploits (NoSQL Injection, XSS, DoS)
 
 ### 📊 Project Management
-- Full CRUD operations for projects
-- Team member management
-- Granular role assignments
-- Project notes and documentation
-- Task and subtask organization
-- File attachment support
+- **Full CRUD operations** for projects (Create, View, Update, Delete)
+- **Comprehensive Team Member Management:** Add, List, Update Roles, Remove members within a project.
+- Granular role assignments: `admin`, `project_admin`, `member`
+- Project notes and documentation (Planned)
+- Task and subtask organization (Planned)
+- File attachment support (Planned)
 
-### 🎯 Task Management
-
+### 🎯 Task Management (Planned)
 - Comprehensive task CRUD operations
 - Nested subtask support
 - Workflow states: `Todo` → `In Progress` → `Done`
@@ -57,137 +58,137 @@ Project Camp is a production-ready backend API for collaborative project managem
 - File attachments per task
 
 ### 📧 Email System
-
 - Beautiful HTML email templates with Mailgen
 - SMTP delivery via Nodemailer
 - Automated verification and reset emails
 - Customizable branding
 
-**Core Technologies:**
-- **Runtime:** Node.js 18+
+### 🧠 Core Technologies:
+- **Runtime & Package Manager:** Bun 1.x
 - **Framework:** Express.js 4.x
 - **Language:** TypeScript 5.0
 - **Database:** MongoDB with Mongoose ODM
+- **Cache/Queue:** Redis
 - **Authentication:** JWT (JSON Web Tokens)
-- **Email:** Nodemailer + Mailgen
 - **Validation:** Zod schemas
+- **Containerization:** Docker, Docker Compose
+- **Testing:** Bun's built-in test runner, Supertest
+- **CI/CD:** GitHub Actions
 
 ## 📦 Quick Start
 
 ### Prerequisites
 
-- Node.js 18+ or Bun
-- MongoDB instance
-- SMTP credentials (Mailtrap, SendGrid, etc.)
+- [Docker](https://docs.docker.com/get-docker/) & [Docker Compose](https://docs.docker.com/compose/install/) (recommended)
+- Alternatively: [Bun](https://bun.sh/docs/installation), MongoDB instance, Redis instance
 
-### Installation
+### Installation (Recommended: Docker Compose)
 
-```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/project-camp.git
-cd project-camp
+The easiest way to get started is using Docker Compose, which will spin up the API, MongoDB, and Redis for you.
 
-# Install dependencies
-bun install
-# or
-npm install
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/YOUR_USERNAME/project-camp.git
+    cd project-camp
+    ```
+2.  **Configure environment variables:**
+    *   Create a `.env` file in the root directory: `cp .env.example .env`
+    *   **Edit `.env`** with your actual secrets and configurations (especially `ACCESS_TOKEN_SECRET`, `REFRESH_TOKEN_SECRET`, and Mailtrap credentials).
+3.  **Build and run the services:**
+    ```bash
+    docker-compose up --build
+    ```
+    The API will be accessible at `http://localhost:8000`. MongoDB and Redis will also be running in their respective containers.
 
-# Configure environment variables
-cp .env.example .env
-# Edit .env with your configuration
+### Installation (Manual - Bun)
 
-# Start development server
-bun run dev
-# or
-npm run dev
-```
-
-The server will start at `http://localhost:3000`
-
-### Environment Configuration
-
-Create a `.env` file in the root directory:
-
-```env
-# Database
-MONGODB_URI=your_mongodb_connection_string_here
-
-# Server
-PORT=3000
-
-# JWT Tokens
-ACCESS_TOKEN_SECRET=your_super_secret_access_token_here_min_32_chars
-ACCESS_TOKEN_EXPIRY=1d
-REFRESH_TOKEN_SECRET=your_super_secret_refresh_token_here_min_32_chars
-REFRESH_TOKEN_EXPIRY=7d
-
-# Email Service (Mailtrap example)
-MAILTRAP_SMTP_HOST=sandbox.smtp.mailtrap.io
-MAILTRAP_SMTP_PORT=2525
-MAILTRAP_SMTP_USER=your_mailtrap_username
-MAILTRAP_SMTP_PASS=your_mailtrap_password
-
-# Frontend
-FRONTEND_URL=https://your-frontend-url.com
-```
-
-> **⚠️ Security Note:** Never commit your `.env` file. Always use strong, randomly generated secrets for production.
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/YOUR_USERNAME/project-camp.git
+    cd project-camp
+    ```
+2.  **Install dependencies:**
+    ```bash
+    bun install
+    ```
+3.  **Configure environment variables:**
+    *   Create a `.env` file: `cp .env.example .env`
+    *   **Edit `.env`** with your configuration, ensuring `MONGODB_URI` points to your local or remote MongoDB instance and `REDIS_HOST`/`REDIS_PORT` point to your Redis instance.
+4.  **Start development server:**
+    ```bash
+    bun run dev
+    ```
+    The server will start at `http://localhost:8000` (or your configured `PORT`).
 
 ## 📁 Project Structure
 
 ```
 project-camp/
 ├── src/
-│   ├── controllers/         # Route controllers
-│   │   ├── auth.controller.ts
+│   ├── controllers/         # Handles request logic (Auth, Health, Projects, Tasks, Notes)
+│   │   ├── auth/            # Authentication controllers
+│   │   ├── projects/        # Project and Member management controllers
 │   │   └── healthCheck.controller.ts
-│   ├── models/             # Mongoose models
-│   │   └── user.models.ts
-│   ├── middlewares/        # Express middlewares
-│   ├── routers/            # API routes
-│   │   └── healthcheck.route.ts
-│   ├── validators/         # Zod schemas
-│   ├── utils/              # Helper utilities
-│   │   ├── api-error.ts
-│   │   ├── api-response.ts
-│   │   ├── async-handler.ts
-│   │   ├── constants.ts
-│   │   └── mail.ts
-│   ├── db/                 # Database connection
+│   ├── models/              # Mongoose schemas and models (User, Project, Task, Note)
+│   │   ├── user.model.ts
+│   │   ├── project.model.ts
+│   │   └── task.model.ts    # Newly added Task model
+│   ├── middlewares/         # Express middlewares (Auth, Validation, Rate Limiting)
+│   ├── routers/             # API routes (Auth, Health, Projects)
+│   │   ├── auth.route.ts
+│   │   ├── healthcheck.route.ts
+│   │   └── project.route.ts
+│   ├── validators/          # Zod schemas for input validation
+│   │   ├── auth/
+│   │   ├── projects/
+│   │   └── tasks/           # Planned Task validators
+│   ├── utils/               # Helper utilities (API Errors, Responses, Constants, Mail, Redis)
+│   ├── db/                  # Database connection
 │   │   └── db.ts
-│   ├── app.ts              # Express app setup
-│   └── index.ts            # Entry point
-├── public/                 # Static assets
-├── package.json
-├── tsconfig.json
-└── README.md
+│   ├── app.ts               # Express application setup
+│   └── index.ts             # Application entry point
+├── public/                  # Static assets
+├── .github/                 # GitHub Actions CI/CD workflows
+├── Dockerfile               # Multi-stage Docker build for the API
+├── docker-compose.yaml      # Orchestrates API, MongoDB, Redis
+├── package.json             # Project metadata and dependencies
+├── tsconfig.json            # TypeScript configuration
+├── bun.lock                 # Bun lockfile
+└── README.md                # Project documentation
 ```
 
 ## 🔗 API Documentation
 
-### Authentication Endpoints
+### Authentication Endpoints (`/api/v1/auth`)
 
 | Method | Endpoint | Description | Auth Required |
 |--------|----------|-------------|---------------|
-| `POST` | `/api/v1/auth/register` | Register a new user | ❌ |
-| `GET` | `/api/v1/auth/verify-email/:token` | Verify email address | ❌ |
-| `POST` | `/api/v1/auth/login` | User login | ❌ |
-| `POST` | `/api/v1/auth/logout` | User logout | ✅ |
-| `POST` | `/api/v1/auth/refresh-token` | Refresh access token | ✅ |
-| `POST` | `/api/v1/auth/forgot-password` | Request password reset | ❌ |
-| `POST` | `/api/v1/auth/reset-password/:token` | Reset password | ❌ |
+| `POST` | `/register` | Register a new user | ❌ |
+| `GET` | `/verify-email/:verificationToken` | Verify user's email address | ❌ |
+| `POST` | `/login` | User authentication | ❌ |
+| `POST` | `/logout` | User logout | ✅ |
+| `GET` | `/current-user` | Get current user's details | ✅ |
+| `POST` | `/change-password` | Change user password | ✅ |
+| `POST` | `/refresh-token` | Refresh access token | ✅ |
+| `POST` | `/forgot-password` | Request password reset email | ❌ |
+| `POST` | `/reset-password/:resetToken` | Reset forgotten password | ❌ |
+| `POST` | `/resend-email-verification` | Resend email verification | ✅ |
 
-### Project Endpoints
+### Project Endpoints (`/api/v1/projects`)
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| `GET` | `/api/v1/projects` | List user's projects | ✅ |
-| `POST` | `/api/v1/projects` | Create new project | ✅ |
-| `GET` | `/api/v1/projects/:projectId` | Get project details | ✅ |
-| `PUT` | `/api/v1/projects/:projectId` | Update project | ✅ |
-| `DELETE` | `/api/v1/projects/:projectId` | Delete project | ✅ |
+| Method   | Endpoint                   | Description                       | Auth Required |
+|----------|----------------------------|-----------------------------------|---------------|
+| `GET`    | `/`                        | List all projects current user is owner or member of | ✅         |
+| `POST`   | `/`                        | Create a new project              | ✅            |
+| `GET`    | `/:projectId`              | Get details of a specific project | ✅            |
+| `PUT`    | `/:projectId`              | Update project details (Owner only) | ✅          |
+| `DELETE` | `/:projectId`              | Delete a project (Owner only)     | ✅            |
+| `POST`   | `/:projectId/members`      | Add a member to the project (Owner only) | ✅     |
+| `GET`    | `/:projectId/members`      | List all members of a project     | ✅            |
+| `PUT`    | `/:projectId/members/:userId` | Update a member's role in the project (Owner only) | ✅ |
+| `DELETE` | `/:projectId/members/:userId` | Remove a member from the project (Owner only) | ✅ |
 
-### Task Endpoints
+### Task Endpoints (Planned)
 
 | Method | Endpoint | Description | Auth Required |
 |--------|----------|-------------|---------------|
@@ -199,94 +200,43 @@ project-camp/
 
 > 📘 **Full API documentation** coming soon with Swagger/OpenAPI specs
 
-## 🎨 Example Usage
+## 🧪 Testing
 
-### Register a New User
+The project includes a comprehensive integration test suite using Bun's built-in test runner and Supertest.
 
-```javascript
-POST /api/v1/auth/register
-Content-Type: application/json
-
-{
-  "email": "user@example.com",
-  "password": "SecurePass123!",
-  "fullName": "John Doe"
-}
-```
-
-### Create a Project
-
-```javascript
-POST /api/v1/projects
-Authorization: Bearer <access_token>
-Content-Type: application/json
-
-{
-  "name": "Website Redesign",
-  "description": "Complete overhaul of company website",
-  "deadline": "2024-12-31"
-}
-```
-
-## 🧪 Available Scripts
+### Run Tests
 
 ```bash
-# Development
-bun run dev          # Start dev server with hot reload
-npm run dev
-
-# Production
-bun run build        # Compile TypeScript to JavaScript
-bun start            # Start production server
-npm run build
-npm start
-
-# Code Quality
-bun run lint         # Run ESLint
-bun run format       # Format code with Prettier
-bun test             # Run test suite
+bun test
 ```
+
+### Continuous Integration
+
+A GitHub Actions workflow (`.github/workflows/tests.yaml`) is configured to automatically run tests on every `push` and `pull_request` to the `main` branch. This ensures code quality and prevents regressions.
 
 ## 🚀 Deployment
 
-### Deploy to Your Platform
+### Deploy with Docker Compose
 
-<details>
-<summary><b>Vercel</b></summary>
+1.  Ensure you have Docker and Docker Compose installed.
+2.  Make sure your `.env` file is configured with production-ready secrets and settings.
+3.  Run the following command in your project root:
+    ```bash
+    docker-compose up -d --build
+    ```
+    This will build your application image and start the API, MongoDB, and Redis containers in detached mode.
 
-```bash
-# Install Vercel CLI
-npm i -g vercel
+### Manual Deployment
 
-# Deploy
-vercel --prod
-```
-
-Add environment variables in Vercel dashboard.
-</details>
-
-<details>
-<summary><b>Railway</b></summary>
+For manual deployment without Docker, ensure you have Bun installed and MongoDB/Redis running, then use:
 
 ```bash
-# Install Railway CLI
-npm i -g @railway/cli
+# Build the application
+bun run build
 
-# Login and deploy
-railway login
-railway init
-railway up
+# Start the production server
+bun start
 ```
-</details>
-
-<details>
-<summary><b>Render</b></summary>
-
-1. Connect your GitHub repository
-2. Set build command: `npm install && npm run build`
-3. Set start command: `npm start`
-4. Add environment variables
-</details>
 
 > **📝 Note:** Remember to set all environment variables on your deployment platform.
 
@@ -296,7 +246,7 @@ We love contributions! Here's how you can help:
 
 1. **Fork** the repository
 2. **Create** your feature branch (`git checkout -b feature/AmazingFeature`)
-3. **Commit** your changes (`git commit -m 'Add some AmazingFeature'`)
+3. **Commit** your changes (`git commit -m 'feat: Add some AmazingFeature'`)
 4. **Push** to the branch (`git push origin feature/AmazingFeature`)
 5. **Open** a Pull Request
 
@@ -304,14 +254,25 @@ Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on our co
 
 ## 📝 Roadmap
 
+- [x] **Core Backend Architecture Setup**
+- [x] **User Authentication & Authorization**
+- [x] **Project Management Module (Full CRUD & Member Management)**
+    - [x] Create, List, Get Details, Update, Delete Projects
+    - [x] Add, List, Update Role, Remove Project Members
+- [ ] **Task Management Module**
+    - [ ] Create, List, Get Details, Update, Delete Tasks
+    - [ ] Implement Subtask Management
+    - [ ] Task Assignment
+    - [ ] File Attachments for Tasks
+- [ ] **Project Notes Module**
+- [x] **API Rate Limiting**
+- [x] **Comprehensive Integration Test Coverage**
+- [x] **Docker Containerization**
+- [x] **CI/CD Pipeline Setup (GitHub Actions)**
 - [ ] Real-time notifications with WebSockets
 - [ ] File storage integration (AWS S3, Cloudinary)
 - [ ] Advanced search and filtering
 - [ ] Activity timeline and audit logs
-- [x] API rate limiting
-- [x] Comprehensive test coverage
-- [x] Docker containerization
-- [x] CI/CD pipeline setup
 
 ## 📄 License
 
@@ -320,7 +281,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - Inspired by [Basecamp](https://basecamp.com/)
-- Built with [Node.js](https://nodejs.org/)
+- Built with [Bun](https://bun.sh/)
 - Email templates powered by [Mailgen](https://github.com/eladnava/mailgen)
 
 ## 📞 Contact & Support
