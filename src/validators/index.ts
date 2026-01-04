@@ -8,3 +8,5 @@ export * from "./projects/projectId.schema";
 export * from "./projects/addMember.schema";
 export * from "./projects/updateRole.schema";
 export * from "./tasks/createTask.schema";
+export * from "./tasks/getTask.schema";
+export * from "./tasks/getTaskDetails.schema";
