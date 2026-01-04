@@ -1,42 +1,18 @@
-import { ProjectModel } from "../../models";
+import { type SafeUser } from "../../models";
+import { getProjectWithOwnerAccess } from "../../services";
 import {
   ApiError,
   ApiResponse,
   asynchandler,
-  ErrorMessages,
 } from "../../utils";
 import type { projectAndUserParamType } from "../../validators/projects/projectAndUserParam.schema";
 
 export const removeProjectMember = asynchandler(async (req, res) => {
   const { projectId, userId }: projectAndUserParamType =
     req.params as projectAndUserParamType;
-  const user = req?.user;
+  const user: SafeUser = req?.user as SafeUser;
 
-  if (!projectId) {
-    throw new ApiError({
-      statusCode: 400,
-      message: ErrorMessages.BAD_REQUEST,
-    });
-  }
-
-  if (!user) {
-    throw new ApiError({
-      statusCode: 401,
-      message: ErrorMessages.UNAUTHORIZED,
-    });
-  }
-
-  const project = await ProjectModel.findOne({
-    _id: projectId,
-    owner: user._id,
-  });
-
-  if (!project) {
-    throw new ApiError({
-      statusCode: 404,
-      message: ErrorMessages.PROJECT_NOT_FOUND,
-    });
-  }
+  const project = await getProjectWithOwnerAccess(projectId, user._id.toString())
 
   if (project.owner.toString() === userId?.toString()) {
     throw new ApiError({

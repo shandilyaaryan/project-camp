@@ -1,42 +1,17 @@
-import { ProjectModel } from "../../models";
+import { type SafeUser } from "../../models";
+import { getProjectWithAccess } from "../../services";
 import {
-  ApiError,
   ApiResponse,
   asynchandler,
-  ErrorMessages,
 } from "../../utils";
 import type { projectIdType } from "../../validators";
 
 export const getProjectById = asynchandler(async (req, res) => {
   const { projectId }: projectIdType = req.params as projectIdType;
 
-  if (!projectId) {
-    throw new ApiError({
-      statusCode: 400,
-      message: ErrorMessages.BAD_REQUEST,
-    });
-  }
+  const user: SafeUser = req.user as SafeUser;
 
-  const user = req?.user;
-
-  if (!user) {
-    throw new ApiError({
-      statusCode: 401,
-      message: ErrorMessages.UNAUTHORIZED,
-    });
-  }
-
-  const project = await ProjectModel.findOne({
-    _id: projectId,
-    $or: [{ owner: user._id }, { "members.userId": user._id }],
-  });
-
-  if (!project) {
-    throw new ApiError({
-      statusCode: 404,
-      message: ErrorMessages.PROJECT_NOT_FOUND,
-    });
-  }
+  const project = await getProjectWithAccess(projectId, user._id.toString());
 
   return res.status(200).json(
     new ApiResponse({

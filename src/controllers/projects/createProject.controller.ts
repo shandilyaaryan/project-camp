@@ -1,9 +1,8 @@
-import { ProjectModel } from "../../models";
+import { ProjectModel, type SafeUser } from "../../models";
 import {
   ApiError,
   ApiResponse,
   asynchandler,
-  ErrorMessages,
   UserRoleEnum,
 } from "../../utils";
 import type { createProjectType } from "../../validators";
@@ -11,19 +10,12 @@ import type { createProjectType } from "../../validators";
 export const createProject = asynchandler(async (req, res) => {
   const { name, description }: createProjectType = req.body;
 
-  const ownerId = req.user?._id;
-
-  if (!ownerId) {
-    throw new ApiError({
-      statusCode: 401,
-      message: ErrorMessages.UNAUTHORIZED,
-    });
-  }
+  const user: SafeUser = req.user as SafeUser;
 
   // Check for duplicate project name for this owner
   const existingProject = await ProjectModel.findOne({
     name: name.trim(),
-    owner: ownerId,
+    owner: user._id,
   });
 
   if (existingProject) {
@@ -37,8 +29,8 @@ export const createProject = asynchandler(async (req, res) => {
   const project = await ProjectModel.create({
     name: name.trim(),
     description: description?.trim(),
-    owner: ownerId,
-    members: [{ userId: ownerId, role: UserRoleEnum.ADMIN }],
+    owner: user._id,
+    members: [{ userId: user._id, role: UserRoleEnum.ADMIN }],
   });
 
   return res.status(201).json(

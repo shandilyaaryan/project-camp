@@ -1,51 +1,23 @@
-import { ProjectModel } from "../../models";
+import { type SafeUser } from "../../models";
+import { getProjectWithOwnerAccess } from "../../services";
 import {
   ApiError,
   ApiResponse,
   asynchandler,
-  ErrorMessages,
 } from "../../utils";
 import type { updateRoleType } from "../../validators";
+import type { projectAndUserParamType } from "../../validators/projects/projectAndUserParam.schema";
 
 export const updateRole = asynchandler(async (req, res) => {
   const { role }: updateRoleType = req.body;
-  const { userId, projectId } = req.params;
-  const user = req?.user;
+  const { userId, projectId }: projectAndUserParamType =
+    req.params as projectAndUserParamType;
+  const user: SafeUser = req.user as SafeUser;
 
-  if (!projectId) {
-    throw new ApiError({
-      statusCode: 400,
-      message: ErrorMessages.BAD_REQUEST,
-    });
-  }
-  if (!role) {
-    throw new ApiError({
-      statusCode: 400,
-      message: ErrorMessages.BAD_REQUEST,
-    });
-  }
-  if (!user) {
-    throw new ApiError({
-      statusCode: 401,
-      message: ErrorMessages.UNAUTHORIZED,
-    });
-  }
-  if (!userId) {
-    throw new ApiError({
-      statusCode: 400,
-      message: ErrorMessages.BAD_REQUEST,
-    });
-  }
-  const project = await ProjectModel.findOne({
-    $and: [{ _id: projectId }, { owner: user._id }],
-  });
-
-  if (!project) {
-    throw new ApiError({
-      statusCode: 404,
-      message: ErrorMessages.PROJECT_NOT_FOUND,
-    });
-  }
+  const project = await getProjectWithOwnerAccess(
+    projectId,
+    user._id.toString(),
+  );
 
   const member = project.members.find(
     (mem) => mem.userId.toString() === userId,

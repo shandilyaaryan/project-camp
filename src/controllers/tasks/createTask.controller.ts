@@ -1,45 +1,18 @@
-import { ProjectModel, TaskModel } from "../../models";
+import { TaskModel, type SafeUser } from "../../models";
+import { getProjectWithAccess } from "../../services";
 import {
   ApiError,
   ApiResponse,
   asynchandler,
-  ErrorMessages,
 } from "../../utils";
 import type { createTaskType, projectIdType } from "../../validators";
 
 export const createTask = asynchandler(async (req, res) => {
   const { projectId }: projectIdType = req.params as projectIdType;
   const taskDetails: createTaskType = req.body;
-  const user = req?.user;
+  const user: SafeUser = req.user as SafeUser;
 
-  if (!user) {
-    throw new ApiError({
-      statusCode: 401,
-      message: ErrorMessages.UNAUTHORIZED,
-    });
-  }
-
-  const project = await ProjectModel.findById(projectId);
-
-  if (!project) {
-    throw new ApiError({
-      statusCode: 404,
-      message: ErrorMessages.PROJECT_NOT_FOUND,
-    });
-  }
-
-  const isMember = project.members.some(
-    (mem) => mem.userId.toString() === user._id.toString(),
-  );
-
-  const isOwner = project.owner.toString() === user._id.toString();
-
-  if (!isMember && !isOwner) {
-    throw new ApiError({
-      statusCode: 403,
-      message: "Only owner or members can create tasks",
-    });
-  }
+  const project = await getProjectWithAccess(projectId, user._id.toString());
 
   if (taskDetails.assignee) {
     const isAssigneeMember = project.members.find(

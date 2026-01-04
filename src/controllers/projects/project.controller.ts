@@ -1,18 +1,11 @@
-import { ProjectModel } from "../../models";
-import { ApiError, ApiResponse, asynchandler, ErrorMessages, UserRoleEnum } from "../../utils";
+import { ProjectModel, type SafeUser } from "../../models";
+import { ApiResponse, asynchandler } from "../../utils";
 
 export const getUserProject = asynchandler(async (req, res) => {
-  const ownerId = req.user?._id;
-
-  if (!ownerId) {
-    throw new ApiError({
-      statusCode: 401,
-      message: ErrorMessages.UNAUTHORIZED,
-    });
-  }
+  const user: SafeUser = req.user as SafeUser;
 
   const projects = await ProjectModel.find({
-    $or: [{ owner: ownerId }, { "members.userId": ownerId }],
+    $or: [{ owner: user._id }, { "members.userId": user._id }],
   });
 
   return res.status(200).json(

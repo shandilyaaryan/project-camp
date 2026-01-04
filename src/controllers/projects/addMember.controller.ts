@@ -1,43 +1,21 @@
-import { ProjectModel, UserModel } from "../../models";
+import { UserModel, type SafeUser } from "../../models";
+import { getProjectWithOwnerAccess, isMember } from "../../services";
 import {
   ApiError,
   ApiResponse,
   asynchandler,
-  ErrorMessages,
 } from "../../utils";
-import type { addMemberType } from "../../validators";
+import type { addMemberType, projectIdType } from "../../validators";
 
 export const addMember = asynchandler(async (req, res) => {
   const { email, role }: addMemberType = req.body;
-  const { projectId } = req.params;
-  const user = req?.user;
+  const { projectId }: projectIdType = req.params as projectIdType;
+  const user: SafeUser = req.user as SafeUser;
 
-  if (!projectId) {
-    throw new ApiError({
-      statusCode: 400,
-      message: ErrorMessages.BAD_REQUEST,
-    });
-  }
-  if (!user) {
-    throw new ApiError({
-      statusCode: 401,
-      message: ErrorMessages.UNAUTHORIZED,
-    });
-  }
-
-  const project = await ProjectModel.findById(projectId);
-  if (!project) {
-    throw new ApiError({
-      statusCode: 404,
-      message: ErrorMessages.PROJECT_NOT_FOUND,
-    });
-  }
-  if (project.owner.toString() !== user._id.toString()) {
-    throw new ApiError({
-      statusCode: 403,
-      message: "Only owner can add members",
-    });
-  }
+  const project = await getProjectWithOwnerAccess(
+    projectId,
+    user._id.toString(),
+  );
   const newMember = await UserModel.findOne({ email });
   if (!newMember) {
     throw new ApiError({
@@ -45,9 +23,7 @@ export const addMember = asynchandler(async (req, res) => {
       message: "Member does not exist",
     });
   }
-  const isAlreadyMember = project.members.some(
-    (member) => member.userId.toString() === newMember._id.toString(),
-  );
+  const isAlreadyMember = isMember(newMember._id.toString(), project);
 
   if (isAlreadyMember) {
     throw new ApiError({
