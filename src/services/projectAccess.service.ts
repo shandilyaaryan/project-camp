@@ -1,4 +1,4 @@
-import { ProjectModel, type IProject } from "../models";
+import { ProjectModel, TaskModel, type IProject } from "../models";
 import { ApiError, ErrorMessages } from "../utils";
 
 export const isMember = (userId: string, project: IProject): boolean => {
@@ -70,4 +70,8 @@ export const getProjectWithOwnerAccess = async (
   }
 
   return project;
+};
+
+export const getProjectTasks = (projectId: string) => {
+  return TaskModel.find({ project: projectId });
 };
