@@ -309,7 +309,7 @@ describe("Project API Integration Tests", () => {
             .put(`/api/v1/projects/${projectId}/members/${user3Id}`)
             .set("Authorization", `Bearer ${secondUserToken}`) // User 2 is unrelated
             .send({ role: "member" })
-            .expect(404); // Not Found (because of owner check in query)
+            .expect(403);
     });
 
     it("should allow Owner to remove a member", async () => {
