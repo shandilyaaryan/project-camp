@@ -6,9 +6,10 @@ import {
   emailVerificationMailgenContent,
   sendEmail,
 } from "../../utils";
+import type { registerType } from "../../validators";
 
 export const registerUser = asynchandler(async (req, res) => {
-  const { email, username, password } = req.body;
+  const { email, username, password }: registerType = req.body;
 
   const existingUser = await UserModel.findOne({
     $or: [{ username }, { email }],

@@ -5,10 +5,10 @@ import {
   asynchandler,
   ErrorMessages,
 } from "../../utils";
-import mongoose from "mongoose";
+import type { updateRoleType } from "../../validators";
 
 export const updateRole = asynchandler(async (req, res) => {
-  const { role } = req.body;
+  const { role }: updateRoleType = req.body;
   const { userId, projectId } = req.params;
   const user = req?.user;
 

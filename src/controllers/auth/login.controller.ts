@@ -6,9 +6,10 @@ import {
 import { issueTokenForUser } from "../../services";
 import { ApiError, ApiResponse, asynchandler } from "../../utils";
 import { authCookieOptions } from "../../utils/cookie";
+import type { loginType } from "../../validators";
 
 export const loginUser = asynchandler(async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password }: loginType = req.body;
 
   const user = await UserModel.findOne({ email }).select("+password");
   if (!user) {

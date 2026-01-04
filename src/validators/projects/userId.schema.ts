@@ -6,3 +6,5 @@ export const userIdSchema = z.object({
     error: "Invalid User ID",
   }),
 });
+
+export type userIdType = z.infer<typeof userIdSchema>;

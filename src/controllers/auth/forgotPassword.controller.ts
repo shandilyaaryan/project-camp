@@ -5,9 +5,10 @@ import {
   resetPasswordMailgenContent,
   sendEmail,
 } from "../../utils";
+import type { forgotPasswordType } from "../../validators";
 
 export const forgotPassword = asynchandler(async (req, res) => {
-  const email = req.body.email;
+  const { email }: forgotPasswordType = req.body;
   const user = await UserModel.findOne({ email });
   if (!user) {
     return res.status(200).json(

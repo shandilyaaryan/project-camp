@@ -1,8 +1,14 @@
 import { ProjectModel } from "../../models";
-import { ApiError, ApiResponse, asynchandler, ErrorMessages } from "../../utils";
+import {
+  ApiError,
+  ApiResponse,
+  asynchandler,
+  ErrorMessages,
+} from "../../utils";
+import type { projectIdType } from "../../validators";
 
 export const getProjectById = asynchandler(async (req, res) => {
-  const { projectId } = req.params;
+  const { projectId }: projectIdType = req.params as projectIdType;
 
   if (!projectId) {
     throw new ApiError({

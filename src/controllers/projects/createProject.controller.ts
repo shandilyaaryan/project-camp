@@ -1,8 +1,15 @@
 import { ProjectModel } from "../../models";
-import { ApiError, ApiResponse, asynchandler, ErrorMessages, UserRoleEnum } from "../../utils";
+import {
+  ApiError,
+  ApiResponse,
+  asynchandler,
+  ErrorMessages,
+  UserRoleEnum,
+} from "../../utils";
+import type { createProjectType } from "../../validators";
 
 export const createProject = asynchandler(async (req, res) => {
-  const { name, description } = req.body;
+  const { name, description }: createProjectType = req.body;
 
   const ownerId = req.user?._id;
 

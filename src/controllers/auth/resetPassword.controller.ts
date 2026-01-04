@@ -1,10 +1,11 @@
 import { UserModel } from "../../models";
 import { ApiError, ApiResponse, asynchandler } from "../../utils";
 import crypto from "crypto";
+import type { resetPasswordType } from "../../validators";
 
 export const resetPassword = asynchandler(async (req, res) => {
   const token = req.params.resetPasswordToken;
-  const newPassword = req.body.newPassword;
+  const { newPassword }: resetPasswordType = req.body;
   if (!token || !newPassword) {
     throw new ApiError({
       statusCode: 400,

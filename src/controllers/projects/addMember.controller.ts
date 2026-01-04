@@ -5,9 +5,10 @@ import {
   asynchandler,
   ErrorMessages,
 } from "../../utils";
+import type { addMemberType } from "../../validators";
 
 export const addMember = asynchandler(async (req, res) => {
-  const { email, role } = req.body;
+  const { email, role }: addMemberType = req.body;
   const { projectId } = req.params;
   const user = req?.user;
 

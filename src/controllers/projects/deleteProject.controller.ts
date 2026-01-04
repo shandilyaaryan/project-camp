@@ -5,9 +5,10 @@ import {
   asynchandler,
   ErrorMessages,
 } from "../../utils";
+import type { projectIdType } from "../../validators";
 
 export const deleteProject = asynchandler(async (req, res) => {
-  const { projectId } = req.params;
+  const { projectId }: projectIdType = req.params as projectIdType;
   const user = req?.user;
 
   if (!user) {

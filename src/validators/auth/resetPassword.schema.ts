@@ -10,3 +10,5 @@ export const resetPasswordSchema = z.object({
         "Password must contain atleast one uppercase letter, one lowercase, one number and one special character",
     }),
 });
+
+export type resetPasswordType = z.infer<typeof resetPasswordSchema>;

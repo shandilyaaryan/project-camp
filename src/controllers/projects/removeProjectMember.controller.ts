@@ -5,9 +5,11 @@ import {
   asynchandler,
   ErrorMessages,
 } from "../../utils";
+import type { projectAndUserParamType } from "../../validators/projects/projectAndUserParam.schema";
 
 export const removeProjectMember = asynchandler(async (req, res) => {
-  const { projectId, userId } = req.params;
+  const { projectId, userId }: projectAndUserParamType =
+    req.params as projectAndUserParamType;
   const user = req?.user;
 
   if (!projectId) {
@@ -35,8 +37,6 @@ export const removeProjectMember = asynchandler(async (req, res) => {
       message: ErrorMessages.PROJECT_NOT_FOUND,
     });
   }
-
-
 
   if (project.owner.toString() === userId?.toString()) {
     throw new ApiError({

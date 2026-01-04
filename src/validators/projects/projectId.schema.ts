@@ -6,3 +6,5 @@ export const projectIdSchema = z.object({
     error: "Invalid Project ID",
   }),
 });
+
+export type projectIdType = z.infer<typeof projectIdSchema>;

@@ -5,10 +5,10 @@ import {
   asynchandler,
   ErrorMessages,
 } from "../../utils";
-import type { createTaskType } from "../../validators";
+import type { createTaskType, projectIdType } from "../../validators";
 
 export const createTask = asynchandler(async (req, res) => {
-  const { projectId } = req.params;
+  const { projectId }: projectIdType = req.params as projectIdType;
   const taskDetails: createTaskType = req.body;
   const user = req?.user;
 

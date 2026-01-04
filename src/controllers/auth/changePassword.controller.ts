@@ -1,9 +1,14 @@
 import { UserModel } from "../../models";
-import { ApiError, ApiResponse, asynchandler, ErrorMessages } from "../../utils";
+import {
+  ApiError,
+  ApiResponse,
+  asynchandler,
+  ErrorMessages,
+} from "../../utils";
+import type { changePasswordType } from "../../validators";
 
 export const changePassword = asynchandler(async (req, res) => {
-  const oldPassword = req.body.oldPassword;
-  const newPassword = req.body.newPassword;
+  const { oldPassword, newPassword }: changePasswordType = req.body.oldPassword;
   const user = await UserModel.findById(req.user?._id).select("+password");
   if (!user) {
     throw new ApiError({

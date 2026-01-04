@@ -15,5 +15,7 @@ export const changePasswordSchema = z
   })
   .refine((data) => data.oldPassword !== data.newPassword, {
     error: "Please choose another password different from your old password",
-    path: ["newPassword"]
+    path: ["newPassword"],
   });
+
+export type changePasswordType = z.infer<typeof changePasswordSchema>;

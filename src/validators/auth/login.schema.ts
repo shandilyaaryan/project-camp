@@ -4,3 +4,5 @@ export const loginSchema = z.object({
   email: z.email("Invalid email address").trim(),
   password: z.string().min(1, "Password is required").trim(),
 });
+
+export type loginType = z.infer<typeof loginSchema>;

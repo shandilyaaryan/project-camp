@@ -20,3 +20,5 @@ export const registerSchema = z.object({
   email: z.email("Please enter a valid email address"),
   fullName: z.string().optional(),
 });
+
+export type registerType = z.infer<typeof registerSchema>;

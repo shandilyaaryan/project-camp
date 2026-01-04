@@ -8,3 +8,5 @@ export const updateProjectSchema = z.object({
     .optional(),
   description: z.string().optional(),
 });
+
+export type updateProjectType = z.infer<typeof updateProjectSchema>;
