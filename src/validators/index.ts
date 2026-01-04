@@ -7,3 +7,4 @@ export * from "./projects/create.schema";
 export * from "./projects/projectId.schema";
 export * from "./projects/addMember.schema";
 export * from "./projects/updateRole.schema";
+export * from "./tasks/createTask.schema";
