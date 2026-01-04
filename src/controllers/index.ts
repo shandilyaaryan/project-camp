@@ -18,3 +18,4 @@ export * from "./projects/listProjectMember.controller";
 export * from "./projects/updateRole.controller";
 export * from "./projects/removeProjectMember.controller";
 export * from "./tasks/createTask.controller";
+export * from "./tasks/listTask.controller";
