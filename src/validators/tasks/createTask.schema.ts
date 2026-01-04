@@ -15,5 +15,6 @@ export const createTaskSchema = z.object({
     )
     .optional(),
   dueDate: z.iso.date("Invalid Date format, expected ISO string").optional(),
-
 });
+
+export type createTaskType = z.infer<typeof createTaskSchema>;

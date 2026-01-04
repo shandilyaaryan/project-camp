@@ -2,8 +2,10 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { authRouter, healthCheckRouter } from "./routers";
-import { errmiddleware } from "./middlewares";
+import { authMiddleware, errmiddleware, paramValidator } from "./middlewares";
 import { projectRouter } from "./routers/project.route";
+import { projectIdSchema } from "./validators";
+import { taskRouter } from "./routers/task.route";
 
 const app = express();
 
@@ -25,6 +27,12 @@ app.use(cookieParser());
 
 app.use("/api/v1/healthcheck", healthCheckRouter);
 app.use("/api/v1/auth", authRouter);
+app.use(
+  "/api/v1/projects/:projectId/tasks",
+  paramValidator(projectIdSchema),
+  authMiddleware,
+  taskRouter,
+);
 app.use("/api/v1/projects", projectRouter);
 
 app.get("/", (req, res) => {
