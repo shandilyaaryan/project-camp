@@ -1,10 +1,20 @@
 import { Router } from "express";
-import { createTaskSchema, taskAndProjectIdSchema } from "../validators";
+import {
+  createTaskSchema,
+  taskAndProjectIdSchema,
+  updateTaskSchema,
+} from "../validators";
 import { paramValidator, validate } from "../middlewares";
-import { createTask, listTask, getTaskById } from "../controllers";
+import { createTask, listTask, getTaskById, updateTask } from "../controllers";
 
 export const taskRouter = Router({ mergeParams: true });
 
 taskRouter.post("/", validate(createTaskSchema), createTask);
 taskRouter.get("/", listTask);
 taskRouter.get("/:taskId", paramValidator(taskAndProjectIdSchema), getTaskById);
+taskRouter.put(
+  "/:taskId",
+  paramValidator(taskAndProjectIdSchema),
+  validate(updateTaskSchema),
+  updateTask,
+);

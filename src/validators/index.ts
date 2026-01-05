@@ -10,3 +10,4 @@ export * from "./projects/updateRole.schema";
 export * from "./tasks/createTask.schema";
 export * from "./tasks/getTask.schema";
 export * from "./tasks/getTaskDetails.schema";
+export * from "./tasks/updateTask.schema";
