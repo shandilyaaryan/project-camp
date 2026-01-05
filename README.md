@@ -16,6 +16,7 @@
 [![Express.js](https://img.shields.io/badge/Express.js-4.x-black?style=flat-square&logo=express)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-47A248?style=flat-square&logo=mongodb)](https://www.mongodb.com/)
 [![Redis](https://img.shields.io/badge/Redis-Cache%20%7C%20Queue-DC382D?style=flat-square&logo=redis)](https://redis.io/)
+[![Cloudinary](https://img.shields.io/badge/Cloudinary-Media%20Management-3448C5?style=flat-square&logo=cloudinary)](https://cloudinary.com/)
 [![Docker](https://img.shields.io/badge/Docker-Containerization-0db7ed?style=flat-square&logo=docker)](https://www.docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
@@ -47,15 +48,13 @@ Project Camp is a production-ready backend API for collaborative project managem
 - **Comprehensive Team Member Management:** Add, List, Update Roles, Remove members within a project.
 - Granular role assignments: `admin`, `project_admin`, `member`
 - Project notes and documentation (Planned)
-- Task and subtask organization (Planned)
-- File attachment support (Planned)
 
-### 🎯 Task Management (Planned)
-- Comprehensive task CRUD operations
-- Nested subtask support
-- Workflow states: `Todo` → `In Progress` → `Done`
-- Task assignment to team members
-- File attachments per task
+### 🎯 Task Management
+- **Full CRUD operations for Tasks:** Create, List, Get Details, Update, Delete tasks.
+- **Task Assignment:** Assign tasks to team members.
+- **Workflow States:** `Todo` → `In Progress` → `Done`.
+- 🚧 **Subtask Management:** Implement nested subtasks for more granular task breakdown.
+- 🚧 **File Attachments:** Integrate file upload directly to Cloudinary for tasks.
 
 ### 📧 Email System
 - Beautiful HTML email templates with Mailgen
@@ -71,6 +70,7 @@ Project Camp is a production-ready backend API for collaborative project managem
 - **Cache/Queue:** Redis
 - **Authentication:** JWT (JSON Web Tokens)
 - **Validation:** Zod schemas
+- **File Uploads:** Multer, Cloudinary, Multer-Storage-Cloudinary
 - **Containerization:** Docker, Docker Compose
 - **Testing:** Bun's built-in test runner, Supertest
 - **CI/CD:** GitHub Actions
@@ -93,7 +93,7 @@ The easiest way to get started is using Docker Compose, which will spin up the A
     ```
 2.  **Configure environment variables:**
     *   Create a `.env` file in the root directory: `cp .env.example .env`
-    *   **Edit `.env`** with your actual secrets and configurations (especially `ACCESS_TOKEN_SECRET`, `REFRESH_TOKEN_SECRET`, and Mailtrap credentials).
+    *   **Edit `.env`** with your actual secrets and configurations (especially `ACCESS_TOKEN_SECRET`, `REFRESH_TOKEN_SECRET`, and Mailtrap credentials, and **Cloudinary credentials**).
 3.  **Build and run the services:**
     ```bash
     docker-compose up --build
@@ -128,21 +128,25 @@ project-camp/
 │   ├── controllers/         # Handles request logic (Auth, Health, Projects, Tasks, Notes)
 │   │   ├── auth/            # Authentication controllers
 │   │   ├── projects/        # Project and Member management controllers
+│   │   └── tasks/           # Task management controllers
 │   │   └── healthCheck.controller.ts
 │   ├── models/              # Mongoose schemas and models (User, Project, Task, Note)
 │   │   ├── user.model.ts
 │   │   ├── project.model.ts
-│   │   └── task.model.ts    # Newly added Task model
-│   ├── middlewares/         # Express middlewares (Auth, Validation, Rate Limiting)
-│   ├── routers/             # API routes (Auth, Health, Projects)
+│   │   └── task.model.ts
+│   ├── middlewares/         # Express middlewares (Auth, Validation, Rate Limiting, File Uploads)
+│   │   └── upload.middleware.ts # Multer/Cloudinary upload middleware
+│   ├── routers/             # API routes (Auth, Health, Projects, Tasks)
 │   │   ├── auth.route.ts
 │   │   ├── healthcheck.route.ts
-│   │   └── project.route.ts
+│   │   ├── project.route.ts
+│   │   └── task.route.ts
 │   ├── validators/          # Zod schemas for input validation
 │   │   ├── auth/
 │   │   ├── projects/
-│   │   └── tasks/           # Planned Task validators
-│   ├── utils/               # Helper utilities (API Errors, Responses, Constants, Mail, Redis)
+│   │   └── tasks/
+│   ├── utils/               # Helper utilities (API Errors, Responses, Constants, Mail, Redis, Cloudinary)
+│   │   └── cloudinary.ts    # Cloudinary configuration and upload utility
 │   ├── db/                  # Database connection
 │   │   └── db.ts
 │   ├── app.ts               # Express application setup
@@ -188,15 +192,15 @@ project-camp/
 | `PUT`    | `/:projectId/members/:userId` | Update a member's role in the project (Owner only) | ✅ |
 | `DELETE` | `/:projectId/members/:userId` | Remove a member from the project (Owner only) | ✅ |
 
-### Task Endpoints (Planned)
+### Task Endpoints (`/api/v1/projects/:projectId/tasks`)
 
 | Method | Endpoint | Description | Auth Required |
 |--------|----------|-------------|---------------|
-| `GET` | `/api/v1/tasks` | List tasks | ✅ |
-| `POST` | `/api/v1/tasks` | Create task | ✅ |
-| `GET` | `/api/v1/tasks/:taskId` | Get task details | ✅ |
-| `PUT` | `/api/v1/tasks/:taskId` | Update task | ✅ |
-| `DELETE` | `/api/v1/tasks/:taskId` | Delete task | ✅ |
+| `POST` | `/` | Create a new task within a project | ✅ |
+| `GET` | `/` | List all tasks for a project | ✅ |
+| `GET` | `/:taskId` | Get details of a specific task | ✅ |
+| `PUT` | `/:taskId` | Update task details (status, assignee, etc.) | ✅ |
+| `DELETE` | `/:taskId` | Delete a task | ✅ |
 
 > 📘 **Full API documentation** coming soon with Swagger/OpenAPI specs
 
@@ -259,10 +263,10 @@ Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on our co
 - [x] **Project Management Module (Full CRUD & Member Management)**
     - [x] Create, List, Get Details, Update, Delete Projects
     - [x] Add, List, Update Role, Remove Project Members
-- [ ] **Task Management Module**
-    - [ ] Create, List, Get Details, Update, Delete Tasks
+- [x] **Task Management Module (CRUD Operations Complete)**
+    - [x] Create, List, Get Details, Update, Delete Tasks
     - [ ] Implement Subtask Management
-    - [ ] Task Assignment
+    - [ ] Task Assignment (Partially done with Create/Update)
     - [ ] File Attachments for Tasks
 - [ ] **Project Notes Module**
 - [x] **API Rate Limiting**
