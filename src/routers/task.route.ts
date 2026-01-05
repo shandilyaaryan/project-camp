@@ -5,7 +5,13 @@ import {
   updateTaskSchema,
 } from "../validators";
 import { paramValidator, validate } from "../middlewares";
-import { createTask, listTask, getTaskById, updateTask } from "../controllers";
+import {
+  createTask,
+  listTask,
+  getTaskById,
+  updateTask,
+  deleteTask,
+} from "../controllers";
 
 export const taskRouter = Router({ mergeParams: true });
 
@@ -17,4 +23,9 @@ taskRouter.put(
   paramValidator(taskAndProjectIdSchema),
   validate(updateTaskSchema),
   updateTask,
+);
+taskRouter.delete(
+  "/:taskId",
+  paramValidator(taskAndProjectIdSchema),
+  deleteTask,
 );

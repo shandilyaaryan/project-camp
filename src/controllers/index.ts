@@ -21,3 +21,4 @@ export * from "./tasks/createTask.controller";
 export * from "./tasks/listTask.controller";
 export * from "./tasks/getTaskById.controller";
 export * from "./tasks/updateTask.controller";
+export * from "./tasks/deleteTask.controller";
