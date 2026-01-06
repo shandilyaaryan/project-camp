@@ -11,7 +11,9 @@ import {
   getTaskById,
   updateTask,
   deleteTask,
+  uploadTaskAttachment,
 } from "../controllers";
+import { upload } from "../middlewares/upload.middleware";
 
 export const taskRouter = Router({ mergeParams: true });
 
@@ -28,4 +30,10 @@ taskRouter.delete(
   "/:taskId",
   paramValidator(taskAndProjectIdSchema),
   deleteTask,
+);
+taskRouter.post(
+  "/:taskId/attachments",
+  paramValidator(taskAndProjectIdSchema),
+  upload.single("attachment"),
+  uploadTaskAttachment,
 );

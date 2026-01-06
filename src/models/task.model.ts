@@ -15,6 +15,7 @@ export interface ITask extends Document {
     isCompleted: boolean;
   }[];
   attachments?: {
+    originalName: string,
     filename: string;
     url: string;
   }[];
@@ -68,6 +69,7 @@ export const taskSchema = new Schema<ITask>(
     ],
     attachments: [
       {
+        originalName: String,
         filename: String,
         url: String,
       },
