@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  addSubTaskSchema,
   createTaskSchema,
   taskAndProjectIdSchema,
   updateTaskSchema,
@@ -12,6 +13,7 @@ import {
   updateTask,
   deleteTask,
   uploadTaskAttachment,
+  addSubTask,
 } from "../controllers";
 import { upload } from "../middlewares/upload.middleware";
 
@@ -36,4 +38,10 @@ taskRouter.post(
   paramValidator(taskAndProjectIdSchema),
   upload.single("attachment"),
   uploadTaskAttachment,
+);
+taskRouter.post(
+  "/:taskId/subtasks",
+  paramValidator(taskAndProjectIdSchema),
+  validate(addSubTaskSchema),
+  addSubTask,
 );

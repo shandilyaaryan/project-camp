@@ -11,3 +11,4 @@ export * from "./tasks/createTask.schema";
 export * from "./tasks/getTask.schema";
 export * from "./tasks/getTaskDetails.schema";
 export * from "./tasks/updateTask.schema";
+export * from "./tasks/addSubTask.schema";

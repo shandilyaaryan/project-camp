@@ -23,3 +23,4 @@ export * from "./tasks/getTaskById.controller";
 export * from "./tasks/updateTask.controller";
 export * from "./tasks/deleteTask.controller";
 export * from "./tasks/uploadTaskAttachment.controller";
+export * from "./tasks/addSubTask.controller";
