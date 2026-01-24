@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   addSubTaskSchema,
   createTaskSchema,
+  subTaskParamSchema,
   taskAndProjectIdSchema,
   updateTaskSchema,
 } from "../validators";
@@ -16,6 +17,7 @@ import {
   addSubTask,
 } from "../controllers";
 import { upload } from "../middlewares/upload.middleware";
+import { deleteSubTask } from "../controllers/tasks/deleteSubTask.controller";
 
 export const taskRouter = Router({ mergeParams: true });
 
@@ -44,4 +46,9 @@ taskRouter.post(
   paramValidator(taskAndProjectIdSchema),
   validate(addSubTaskSchema),
   addSubTask,
+);
+taskRouter.delete(
+  "/:taskId/subtasks/:subTaskId",
+  paramValidator(subTaskParamSchema),
+  deleteSubTask,
 );

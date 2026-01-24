@@ -1,11 +1,14 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { authRouter, healthCheckRouter } from "./routers";
+import {
+  authRouter,
+  healthCheckRouter,
+  projectRouter,
+  taskRouter,
+} from "./routers";
 import { authMiddleware, errmiddleware, paramValidator } from "./middlewares";
-import { projectRouter } from "./routers/project.route";
 import { projectIdSchema } from "./validators";
-import { taskRouter } from "./routers/task.route";
 
 const app = express();
 

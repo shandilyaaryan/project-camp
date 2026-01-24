@@ -12,3 +12,4 @@ export * from "./tasks/getTask.schema";
 export * from "./tasks/getTaskDetails.schema";
 export * from "./tasks/updateTask.schema";
 export * from "./tasks/addSubTask.schema";
+export * from "./tasks/subTaskParam.schema";
